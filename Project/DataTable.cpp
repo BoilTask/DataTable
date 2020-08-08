@@ -10,7 +10,7 @@ int main()
 
     const ConfigDataTable* data_table_ptr = DATATABLE_GET_DATA(ConfigDataTable, 101000000);
     if (data_table_ptr) {
-        std::cout << "GameType:" << data_table_ptr->GameType << std::endl;
+        std::cout << "GameType:" << data_table_ptr->EnableGame << std::endl;
     }
 
     system("pause");

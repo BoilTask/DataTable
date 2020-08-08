@@ -10,7 +10,7 @@ DataCsvParser::DataCsvParser(std::string str)
 	: data_string_(std::move(str))
 {
 	empty_string_ = "";
-	data_index_ = -1;
+	data_index_ = 0;
 	InitDataItemList();
 }
 	
@@ -90,7 +90,7 @@ void DataCsvParser::ParseString(std::string& item){
 	item = GetStringItem();
 }
 	
-void DataCsvParser::ParseVectoBool(std::vector<bool>& item) {
+void DataCsvParser::ParseVectorBool(std::vector<bool>& item) {
 	ParseVector(item);		
 }
 	

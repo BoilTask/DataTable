@@ -12,7 +12,7 @@ public:
     void ParseInt(int32& item);
     void ParseFloat(float& item);
     void ParseString(std::string& item);
-    void ParseVectoBool(std::vector<bool>& item);
+    void ParseVectorBool(std::vector<bool>& item);
     void ParseVectorInt(std::vector<int>& item);
     void ParseVectorFloat(std::vector<float>& item);
     void ParseVectorString(std::vector<std::string>& item);

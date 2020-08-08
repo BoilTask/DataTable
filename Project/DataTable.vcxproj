@@ -29,6 +29,7 @@
     <ClInclude Include="DataTable\data_table_base.h" />
     <ClInclude Include="DataTable\data_table_manager.h" />
     <ClInclude Include="DataTable\data_table_template.hpp" />
+    <ClInclude Include="DataTable\example_data_table.h" />
     <ClInclude Include="DataTable\string_data_table.h" />
     <ClInclude Include="Def\game_macro.hpp" />
     <ClInclude Include="Def\game_def.hpp" />
@@ -148,6 +149,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>.\Def;.\DataTable;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

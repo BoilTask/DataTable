@@ -47,5 +47,8 @@
     <ClInclude Include="Def\game_def.hpp">
       <Filter>Source\Def</Filter>
     </ClInclude>
+    <ClInclude Include="DataTable\example_data_table.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

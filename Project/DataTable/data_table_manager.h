@@ -9,6 +9,7 @@
 
 #include"string_data_table.h"
 #include"config_data_table.h"
+#include"example_data_table.h"
 
 class DataTableManager
 {
@@ -16,6 +17,7 @@ public:
 	DataTableManager()
 		: REGISTER_DATATABLE(StringDataTable)
 		, REGISTER_DATATABLE(ConfigDataTable)
+		, REGISTER_DATATABLE(ExampleDataTable)
 	{
 			
 	}
@@ -35,6 +37,7 @@ public:
 
 	DECLARE_DATATABLE(StringDataTable)
 	DECLARE_DATATABLE(ConfigDataTable)
+	DECLARE_DATATABLE(ExampleDataTable)
 
 };
 

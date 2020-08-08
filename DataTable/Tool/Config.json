@@ -1,0 +1,40 @@
+{
+    "export_path": ".\\Export\\",
+    "code_path": "..\\Project\\DataTable\\",
+    "100": {
+        "upper_case": "StringDataTable",
+        "lower_case": "string_data_table",
+        "sheet_list": [
+            {
+                "sheet_name": "Sheet1",
+                "data_id_row": 4,
+                "data_id_col": 2,
+                "export_type": "Horizontal"
+            }
+        ]
+    },
+    "101": {
+        "upper_case": "ConfigDataTable",
+        "lower_case": "config_data_table",
+        "sheet_list": [
+            {
+                "sheet_name": "Sheet1",
+                "data_id_row": 4,
+                "data_id_col": 3,
+                "export_type": "Vertical"
+            }
+        ]
+    },
+    "102": {
+        "upper_case": "ExampleDataTable",
+        "lower_case": "example_data_table",
+        "sheet_list": [
+            {
+                "sheet_name": "Sheet1",
+                "data_id_row": 4,
+                "data_id_col": 2,
+                "export_type": "Horizontal"
+            }
+        ]
+    }
+}
