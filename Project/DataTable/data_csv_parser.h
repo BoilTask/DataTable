@@ -19,6 +19,7 @@ public:
 		
 private:
 	void InitDataItemList();
+	void ParseDataItem(int32 item_index);
 	std::string& GetStringItem();
 
 	template <class T>

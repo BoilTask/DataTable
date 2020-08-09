@@ -1,7 +1,7 @@
 
 #include "data_csv_parser.h"
 
-
+#include <iostream>
 #include <sstream>
 #include <utility>
 
@@ -10,16 +10,50 @@ DataCsvParser::DataCsvParser(std::string str)
 	: data_string_(std::move(str))
 {
 	empty_string_ = "";
-	data_index_ = 0;
+	data_index_ = -1;
 	InitDataItemList();
 }
 	
 void DataCsvParser::InitDataItemList() {
-	std::istringstream line_stream(data_string_);
-	std::string item_string;
-	while (getline(line_stream, item_string, ','))
-	{
-		data_item_list_.push_back(item_string.substr(1, item_string.length() - 2));
+
+	int32 item_index = 0;
+	while (item_index < data_string_.length()) {
+		if (data_string_[item_index] == ',') {
+			break;
+		}
+		item_index++;
+	}
+
+	ParseDataItem(item_index + 2);
+}
+
+void DataCsvParser::ParseDataItem(int32 item_index)
+{
+	if (item_index >= data_string_.length()) {
+		return;
+	}
+
+	std::string item = "";
+	while (true) {
+		if (item_index + 1 >= data_string_.length()) {
+			data_item_list_.push_back(item);
+			break;
+		}
+		if (data_string_[item_index] == '"') {
+			if (data_string_[item_index + 1] == '"') {
+				item += '"';
+				++item_index;
+			}
+			else {
+				data_item_list_.push_back(item);
+				ParseDataItem(item_index + 3);
+				break;
+			}
+		}
+		else {
+			item += data_string_[item_index];
+		}
+		++item_index;
 	}
 }
 
