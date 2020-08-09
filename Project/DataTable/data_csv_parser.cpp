@@ -116,8 +116,8 @@ void DataCsvParser::ParseVectorString(std::vector<std::string>& item_list) {
 	
 	const std::string str_line = GetStringItem();
 
-	// ("Te\"stA","Te)stB","Te,stC","Te\\stD")
-	std::cout << str_line << std::endl;
+	//("Te\"stA","Te)stB","Te,stC","Te\\stD")
+	//std::cout << str_line << std::endl;
 
 	int32 item_index = 2;
 
