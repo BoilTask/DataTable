@@ -19,14 +19,6 @@
 #define SAFE_RELEASE(x)	if( (x)!=NULL ) { (x)->Release(); (x)=NULL; }
 #endif
 
-#ifdef CARDSERVER
-#define DATATABLE_ARRAY_GET_SIZE(InArrayName) \
-		InArrayName.size()
-#else
-#define DATATABLE_ARRAY_GET_SIZE(InArrayName) \
-		InArrayName.Num()
-#endif
-
 #ifndef GET_DATATABLE_REF
 #define GET_DATATABLE_REF(DataTableName) DataTableName##_
 #endif
