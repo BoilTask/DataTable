@@ -25,6 +25,7 @@ void DataCsvParser::InitDataItemList() {
 	}
 
 	ParseDataItem(item_index + 2);
+
 }
 
 void DataCsvParser::ParseDataItem(int32 item_index)
@@ -58,44 +59,19 @@ void DataCsvParser::ParseDataItem(int32 item_index)
 }
 
 template <class T>
-void DataCsvParser::ParseVector(std::vector<T>& item)
+void DataCsvParser::ParseVector(std::vector<T>& item_list)
 {
-	const std::string str = GetStringItem();
-		
-	auto word_begin = str.begin();
-	std::string sub_string;
-	bool is_set_begin = false;
-	for (auto iter = str.begin(); iter != str.end(); ++iter)
-	{
-		if (*iter == '(')
-			continue;
-
-		if (*iter != ',' && *iter != ')')
-		{
-			if (is_set_begin)
-				continue;
-
-			word_begin = iter;
-			is_set_begin = true;
-		}
-		else
-		{
-			if (!is_set_begin)
-				break;
-			sub_string = std::string(word_begin, iter);
-			T TValue;
-			std::stringstream ss;
-			ss << sub_string;
-			ss >> TValue;
-			item.push_back(TValue);
-			is_set_begin = false;
-
-			if (*iter == ')')
-				break;
-		}
+	const std::string str_line = GetStringItem();
+	std::istringstream line_stream(str_line.substr(1, str_line.length() - 2));
+	std::string item_string;
+	while (getline(line_stream, item_string, ',')){
+		std::stringstream ss;
+		ss << item_string;
+		T item_value;
+		ss >> item_value;
+		item_list.push_back(item_value);
 	}
 }
-
 
 std::string& DataCsvParser::GetStringItem(){
 	++data_index_;
@@ -124,18 +100,52 @@ void DataCsvParser::ParseString(std::string& item){
 	item = GetStringItem();
 }
 	
-void DataCsvParser::ParseVectorBool(std::vector<bool>& item) {
-	ParseVector(item);		
+void DataCsvParser::ParseVectorBool(std::vector<bool>& item_list) {
+	ParseVector(item_list);
 }
 	
-void DataCsvParser::ParseVectorInt(std::vector<int>& item) {
-	ParseVector(item);
+void DataCsvParser::ParseVectorInt(std::vector<int>& item_list) {
+	ParseVector(item_list);
 }
 	
-void DataCsvParser::ParseVectorFloat(std::vector<float>& item) {
-	ParseVector(item);
+void DataCsvParser::ParseVectorFloat(std::vector<float>& item_list) {
+	ParseVector(item_list);
 }
 
-void DataCsvParser::ParseVectorString(std::vector<std::string>& item) {
-	ParseVector(item);
+void DataCsvParser::ParseVectorString(std::vector<std::string>& item_list) {
+	
+	const std::string str_line = GetStringItem();
+
+	// ("Te\"stA","Te)stB","Te,stC","Te\\stD")
+	std::cout << str_line << std::endl;
+
+	int32 item_index = 2;
+
+	std::string item = "";
+
+	while (true) {
+		if (item_index + 1 >= str_line.length()) {
+			item_list.push_back(item);
+			break;
+		}
+		if (str_line[item_index] == '\\' ) {
+			if (str_line[item_index + 1] == '"') {
+				item += "\"";
+				++item_index;
+			}
+			else if (str_line[item_index + 1] == '\\') {
+				item += "\\";
+				++item_index;
+			}
+		}
+		else if (str_line[item_index] == '"') {
+			item_list.push_back(item);
+			item = "";
+			item_index += 2;
+		}
+		else {
+			item += str_line[item_index];
+		}
+		++item_index;
+	}
 }

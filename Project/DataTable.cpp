@@ -54,15 +54,8 @@ int main()
 
         std::cout << "VectorStringType:" << std::endl;
         for (int i = 0; i < data_table_ptr->VectorStringType.size(); i++) {
-            if (i == 0) {
-                std::cout << "(";
-            }
-            else {
-                std::cout << ",";
-            }
-            std::cout << data_table_ptr->VectorStringType[i];
+            std::cout << data_table_ptr->VectorStringType[i] << std::endl;
         }
-        std::cout << ")" << std::endl;
 
     }
 

@@ -12,10 +12,10 @@ public:
     void ParseInt(int32& item);
     void ParseFloat(float& item);
     void ParseString(std::string& item);
-    void ParseVectorBool(std::vector<bool>& item);
-    void ParseVectorInt(std::vector<int>& item);
-    void ParseVectorFloat(std::vector<float>& item);
-    void ParseVectorString(std::vector<std::string>& item);
+    void ParseVectorBool(std::vector<bool>& item_list);
+    void ParseVectorInt(std::vector<int>& item_list);
+    void ParseVectorFloat(std::vector<float>& item_list);
+    void ParseVectorString(std::vector<std::string>& item_list);
 		
 private:
 	void InitDataItemList();
@@ -23,7 +23,7 @@ private:
 	std::string& GetStringItem();
 
 	template <class T>
-	void ParseVector(std::vector<T>& item);
+	void ParseVector(std::vector<T>& item_list);
 		
 private:
 	std::string data_string_;
