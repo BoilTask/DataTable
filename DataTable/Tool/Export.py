@@ -97,7 +97,6 @@ def parse_data(data_type, data):
         return data.replace("\"", "\"\"")
     if data_type == "vector<bool>":
         data = str(data)
-        data = data[1: len(data) - 1]
         word_list = data.split(",")
         data = "("
         is_first = True
@@ -114,7 +113,6 @@ def parse_data(data_type, data):
         return data
     if data_type == "vector<int32>":
         data = str(data)
-        data = data[1: len(data) - 1]
         word_list = data.split(",")
         data = "("
         is_first = True
@@ -128,7 +126,6 @@ def parse_data(data_type, data):
         return data
     if data_type == "vector<float>":
         data = str(data)
-        data = data[1: len(data) - 1]
         word_list = data.split(",")
         data = "("
         is_first = True
@@ -142,7 +139,6 @@ def parse_data(data_type, data):
         return data
     if data_type == "vector<string>":
         data = str(data)
-        data = data[1: len(data) - 1]
         word_list = data.split(",")
         data = "("
         is_first = True
