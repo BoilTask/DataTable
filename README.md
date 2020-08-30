@@ -67,8 +67,8 @@ Excel表需要使用支持宏的版本打开，并根据需要修改代码。
 - 复制出一张新表
 - 按照格式修改信息
 - 在`Config.json`中添加配置项
-- 运行`Export.bat`选择对应表并执行`generate_code & export_data"`
-- 在`data_table_manager.h`中添加`DECLARE_DATATABLE_SERVER`、`REGISTER_DATATABLE_SERVER`宏语句与对应头文件
+- 运行`Export.bat`选择`0.All`并执行`register_datatable`
+- 运行`Export.bat`选择对应表并执行`generate_code & export_data`
 
 #### 配置使用
 
