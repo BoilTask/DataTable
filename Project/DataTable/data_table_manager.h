@@ -2,25 +2,19 @@
 #define __DATA_TABLE_MANAGER_HPP__
 
 #include <map>
-
 #include "game_macro.hpp"
-
+//Don't edit the following content.DATATABLE_HEADER_START
+#include "string_data_table.h"
+#include "config_data_table.h"
+#include "example_data_table.h"
+//Don't edit the above content.DATATABLE_HEADER_END
 #include"data_table_template.hpp"
-
-#include"string_data_table.h"
-#include"config_data_table.h"
-#include"example_data_table.h"
 
 class DataTableManager
 {
 public:
-	DataTableManager()
-		: REGISTER_DATATABLE(StringDataTable)
-		, REGISTER_DATATABLE(ConfigDataTable)
-		, REGISTER_DATATABLE(ExampleDataTable)
-	{
-			
-	}
+	DataTableManager();
+
 public:
 	static DataTableManager& GetInstance() {
 		if (!DataTableManagerPtr_) {
@@ -33,11 +27,17 @@ private:
 	static DataTableManager* DataTableManagerPtr_;
 
 public:
-	void Init();
-
+//Don't edit the following content.DATATABLE_DECLARE_START
 	DECLARE_DATATABLE(StringDataTable)
 	DECLARE_DATATABLE(ConfigDataTable)
 	DECLARE_DATATABLE(ExampleDataTable)
+//Don't edit the above content.DATATABLE_DECLARE_END
+
+public:
+	void Init();
+
+private:
+	bool is_init_success;
 
 };
 

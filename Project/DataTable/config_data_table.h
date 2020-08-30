@@ -8,14 +8,14 @@
 
 class ConfigDataTable : public DataTableBase
 {
-    public:
-    ConfigDataTable(std::string data_string)
-    {
-        DataCsvParser csv_parser(data_string);
-        csv_parser.ParseInt(DataId);
-        csv_parser.ParseBool(EnableGame);
-    };
-    
-    int32 DataId;
-    bool EnableGame;
+public:
+	ConfigDataTable(std::string data_string)
+	{
+		DataCsvParser csv_parser(data_string);
+		csv_parser.ParseInt(DataId);
+		csv_parser.ParseBool(EnableGame);
+	};
+
+	int32 DataId;
+	bool EnableGame;
 };

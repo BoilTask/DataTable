@@ -1,7 +1,7 @@
 
 #include "data_csv_parser.h"
 
-#include <iostream>
+
 #include <sstream>
 #include <utility>
 
@@ -13,7 +13,7 @@ DataCsvParser::DataCsvParser(std::string str)
 	data_index_ = -1;
 	InitDataItemList();
 }
-	
+
 void DataCsvParser::InitDataItemList() {
 
 	int32 item_index = 0;
@@ -64,7 +64,7 @@ void DataCsvParser::ParseVector(std::vector<T>& item_list)
 	const std::string str_line = GetStringItem();
 	std::istringstream line_stream(str_line.substr(1, str_line.length() - 2));
 	std::string item_string;
-	while (getline(line_stream, item_string, ',')){
+	while (getline(line_stream, item_string, ',')) {
 		std::stringstream ss;
 		ss << item_string;
 		T item_value;
@@ -73,16 +73,16 @@ void DataCsvParser::ParseVector(std::vector<T>& item_list)
 	}
 }
 
-std::string& DataCsvParser::GetStringItem(){
+std::string& DataCsvParser::GetStringItem() {
 	++data_index_;
-	if(data_index_ >= 0 && data_index_ < data_item_list_.size())
+	if (data_index_ >= 0 && data_index_ < data_item_list_.size())
 	{
 		return data_item_list_[data_index_];
 	}
 	return empty_string_;
 }
-	
-void DataCsvParser::ParseBool(bool& item){
+
+void DataCsvParser::ParseBool(bool& item) {
 	int32 value = std::atoi(GetStringItem().c_str());
 	item = (value != 0);
 }
@@ -91,33 +91,30 @@ void DataCsvParser::ParseInt(int32& item)
 {
 	item = std::atoi(GetStringItem().c_str());
 }
-	
-void DataCsvParser::ParseFloat(float& item){
+
+void DataCsvParser::ParseFloat(float& item) {
 	item = (float)std::atof(GetStringItem().c_str());
 }
-	
-void DataCsvParser::ParseString(std::string& item){
+
+void DataCsvParser::ParseString(std::string& item) {
 	item = GetStringItem();
 }
-	
+
 void DataCsvParser::ParseVectorBool(std::vector<bool>& item_list) {
 	ParseVector(item_list);
 }
-	
+
 void DataCsvParser::ParseVectorInt(std::vector<int>& item_list) {
 	ParseVector(item_list);
 }
-	
+
 void DataCsvParser::ParseVectorFloat(std::vector<float>& item_list) {
 	ParseVector(item_list);
 }
 
 void DataCsvParser::ParseVectorString(std::vector<std::string>& item_list) {
-	
-	const std::string str_line = GetStringItem();
 
-	//("Te\"stA","Te)stB","Te,stC","Te\\stD")
-	//std::cout << str_line << std::endl;
+	const std::string str_line = GetStringItem();
 
 	int32 item_index = 2;
 
@@ -128,7 +125,7 @@ void DataCsvParser::ParseVectorString(std::vector<std::string>& item_list) {
 			item_list.push_back(item);
 			break;
 		}
-		if (str_line[item_index] == '\\' ) {
+		if (str_line[item_index] == '\\') {
 			if (str_line[item_index + 1] == '"') {
 				item += "\"";
 				++item_index;
