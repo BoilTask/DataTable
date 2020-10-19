@@ -213,8 +213,7 @@ def export_data(file_id):
                     for csv_head in csv_head_list:
                         export_file.write(",")
                         export_file.write(csv_head)
-
-                export_file.write("\n")
+                    export_file.write("\n")
 
                 for data_id_item in range(data_id_row + 1, data_id_row_max):
                     data_row = excel_sheet.row_values(data_id_item)
