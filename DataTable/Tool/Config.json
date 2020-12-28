@@ -34,6 +34,12 @@
                 "data_id_row": 4,
                 "data_id_col": 2,
                 "export_type": "Horizontal"
+            },
+            {
+                "sheet_name": "Sheet2",
+                "data_id_row": 4,
+                "data_id_col": 2,
+                "export_type": "Horizontal"
             }
         ]
     }

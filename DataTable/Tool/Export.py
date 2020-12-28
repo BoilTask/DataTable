@@ -105,13 +105,17 @@ def parse_data(data_type, data):
             return "0"
         return "1"
     if data_type == "int32":
+        data = str(data)
+        data = data.strip()
         if data == "":
             return "0"
-        return str(int(data))
+        return str(int(float(data)))
     if data_type == "float":
+        data = str(data)
+        data = data.strip()
         if data == "":
             return "0"
-        return str(float(data))
+        return str(float(data)).rstrip('0').rstrip('.')
     if data_type == "string":
         data = str(data)
         return data.replace("\"", "\"\"")
@@ -125,10 +129,7 @@ def parse_data(data_type, data):
                 is_first = False
             else:
                 data = data + ","
-            if is_data_false(word):
-                data = data + "0"
-            else:
-                data = data + "1"
+            data = data + parse_data("bool", word)
         data = data + ")"
         return data
     if data_type == "vector<int32>":
@@ -144,7 +145,7 @@ def parse_data(data_type, data):
             if word == "":
                 data = data + "0"
             else:
-                data = data + str(int(word))
+                data = data + parse_data("int32", word)
         data = data + ")"
         return data
     if data_type == "vector<float>":
@@ -157,10 +158,7 @@ def parse_data(data_type, data):
                 is_first = False
             else:
                 data = data + ","
-            if word == "":
-                data = data + "0"
-            else:
-                data = data + str(float(word))
+            data = data + parse_data("float", word)
         data = data + ")"
         return data
     if data_type == "vector<string>":
@@ -173,7 +171,7 @@ def parse_data(data_type, data):
                 is_first = False
             else:
                 data = data + ","
-            data = data + word.replace("\"", "\"\"")
+            data = data + parse_data("string", word)
         data = data + ")"
         return data
     return ''
