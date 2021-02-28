@@ -37,6 +37,7 @@ Excel表需要使用支持宏的版本打开，并根据需要修改代码。
 - int32
 - float
 - string
+- bit
 - vector\<bool\>
 - vector\<int32\>
 - vector\<float>\>
@@ -57,6 +58,8 @@ Excel表需要使用支持宏的版本打开，并根据需要修改代码。
 具体规则可参考示例配置表。
 
 #### 修改配置
+
+配置路径：`DataTable\Tool\Config.json`
 
 打开对应配置表，修改后导出数据即可。
 

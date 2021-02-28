@@ -10,8 +10,14 @@ def is_config_file_valid():
     if not "export_path" in config_data:
         print("config hasn't export_path")
         return False
-    if not "code_path" in config_data:
-        print("config hasn't code_path")
+    if not "server_code_path" in config_data:
+        print("config hasn't server_code_path")
+        return False
+    if not "client_code_path" in config_data:
+        print("config hasn't client_code_path")
+        return False
+    if not "namespace" in config_data:
+        print("config hasn't namespace")
         return False
     return True
 
@@ -57,7 +63,7 @@ def is_data_false(data):
     return data == "" or data == "0" or data == "False" or data == "false"
 
 
-def get_data_type(data_type):
+def get_server_data_type(data_type):
     if data_type == "bool":
         return "bool"
     if data_type == "int32":
@@ -66,6 +72,8 @@ def get_data_type(data_type):
         return "float"
     if data_type == "string":
         return "std::string"
+    if data_type == "bit":
+        return "int32"
     if data_type == "vector<bool>":
         return "std::vector<bool>"
     if data_type == "vector<int32>":
@@ -74,6 +82,28 @@ def get_data_type(data_type):
         return "std::vector<float>"
     if data_type == "vector<string>":
         return "std::vector<std::string>"
+    return ''
+
+
+def get_client_data_type(data_type):
+    if data_type == "bool":
+        return "bool"
+    if data_type == "int32":
+        return "int32"
+    if data_type == "float":
+        return "float"
+    if data_type == "string":
+        return "FString"
+    if data_type == "bit":
+        return "int32"
+    if data_type == "vector<bool>":
+        return "TArray<bool>"
+    if data_type == "vector<int32>":
+        return "TArray<int32>"
+    if data_type == "vector<float>":
+        return "TArray<float>"
+    if data_type == "vector<string>":
+        return "TArray<FString>"
     return ''
 
 
@@ -86,6 +116,8 @@ def get_parse_function_name(data_type):
         return "ParseFloat"
     if data_type == "string":
         return "ParseString"
+    if data_type == "bit":
+        return "ParseInt"
     if data_type == "vector<bool>":
         return "ParseVectorBool"
     if data_type == "vector<int32>":
@@ -119,6 +151,13 @@ def parse_data(data_type, data):
     if data_type == "string":
         data = str(data)
         return data.replace("\"", "\"\"")
+    if data_type == "bit":
+        data = str(data)
+        word_list = data.split(",")
+        value = 0
+        for word in word_list:
+            value = value << 1 | int(parse_data("bool", word))
+        return str(value)
     if data_type == "vector<bool>":
         data = str(data)
         word_list = data.split(",")
@@ -239,8 +278,7 @@ def export_data(file_id):
                     for csv_head in csv_head_list:
                         export_file.write(",")
                         export_file.write(csv_head)
-
-                export_file.write("\n")
+                    export_file.write("\n")
 
                 for data_id_item in range(data_id_col + 1, data_id_col_max):
                     data_row = excel_sheet.col_values(data_id_item)
@@ -266,6 +304,20 @@ def generate_code(file_id):
     file_config = config_data[file_id]
     sheet_list = file_config["sheet_list"]
 
+    enable_server_code = False
+    if "enable_server_code" in config_data \
+            and config_data["enable_server_code"] == True \
+            and "enable_server_code" in file_config \
+            and file_config["enable_server_code"] == True:
+        enable_server_code = True
+
+    enable_client_code = False
+    if "enable_client_code" in config_data \
+            and config_data["enable_client_code"] == True \
+            and "enable_client_code" in file_config \
+            and file_config["enable_client_code"] == True:
+        enable_client_code = True
+
     for sheet_info in sheet_list:
 
         excel_sheet = excel_file.sheet_by_name(sheet_info["sheet_name"])
@@ -290,48 +342,92 @@ def generate_code(file_id):
             data_type_list = excel_sheet.col_values(
                 data_id_col - 1)[data_id_row:]
 
-        with open(file_path + config_data['code_path'] + file_config["lower_case"] + ".h", 'w', encoding='utf-8') as code_file:
+        if enable_server_code:
+            with open(file_path + config_data['server_code_path'] + file_config["lower_case"] + config_data['server_file_suffix'] + config_data['server_file_extension'], 'w', encoding='utf-8') as server_code_file:
 
-            code_file.write("#pragma once\n")
-            code_file.write("\n")
-            code_file.write(
-                "//Exported by Excel, please don't edit this file directly.\n")
-            code_file.write("\n")
-            code_file.write("#include \"game_def.hpp\"\n")
-            code_file.write("#include \"data_table_base.h\"\n")
-            code_file.write("#include \"data_csv_parser.h\"\n")
-            code_file.write("\n")
-            code_file.write(
-                "class " + file_config["upper_case"] + " : public DataTableBase\n")
-            code_file.write("{\n")
-            code_file.write("public:\n")
-            code_file.write(
-                "\t" + file_config["upper_case"] + "(std::string data_string)\n")
-            code_file.write("\t{\n")
-            code_file.write("\t\tDataCsvParser csv_parser(data_string);\n")
+                server_code_file.write("#pragma once\n")
+                server_code_file.write("\n")
+                server_code_file.write(
+                    "//Exported by Excel, please don't edit this file directly.\n")
+                server_code_file.write("\n")
+                server_code_file.write(
+                    "#include \"" + config_data['type_def_file'] + "\"\n")
+                server_code_file.write("#include \"data_table_base.h\"\n")
+                server_code_file.write("#include \"data_csv_parser.h\"\n")
+                server_code_file.write("\n")
+                server_code_file.write(
+                    "namespace "+config_data["namespace"]+"\n")
+                server_code_file.write("{\n")
+                server_code_file.write(
+                    "\tclass " + file_config["upper_case"] + " : public DataTableBase\n")
+                server_code_file.write("\t{\n")
+                server_code_file.write("\tpublic:\n")
+                server_code_file.write(
+                    "\t\t" + file_config["upper_case"] + "(std::string data_string)\n")
+                server_code_file.write("\t\t{\n")
+                server_code_file.write(
+                    "\t\t\tDataCsvParser csv_parser(data_string);\n")
 
-            for data_index in range(len(csv_head_list)):
-                code_file.write("\t\tcsv_parser.")
-                code_file.write(
-                    get_parse_function_name(data_type_list[data_index]))
-                code_file.write("(")
-                code_file.write(csv_head_list[data_index])
-                code_file.write(");\n")
+                for data_index in range(len(csv_head_list)):
+                    server_code_file.write("\t\t\tcsv_parser.")
+                    server_code_file.write(
+                        get_parse_function_name(data_type_list[data_index]))
+                    server_code_file.write("(")
+                    server_code_file.write(csv_head_list[data_index])
+                    server_code_file.write(");\n")
 
-            code_file.write("\t};\n")
-            code_file.write("\n")
+                server_code_file.write("\t\t};\n")
+                server_code_file.write("\n")
 
-            for data_index in range(len(csv_head_list)):
-                code_file.write("\t")
-                code_file.write(get_data_type(data_type_list[data_index]))
-                code_file.write(" ")
-                code_file.write(csv_head_list[data_index])
-                code_file.write(";\n")
+                for data_index in range(len(csv_head_list)):
+                    server_code_file.write("\t\t")
+                    server_code_file.write(
+                        get_server_data_type(data_type_list[data_index]))
+                    server_code_file.write(" ")
+                    server_code_file.write(csv_head_list[data_index])
+                    server_code_file.write(";\n")
 
-            code_file.write("};\n")
+                server_code_file.write("\t};\n")
+                server_code_file.write("}\n")
 
-            code_file.close()
-            print("Generate " + file_id + " Code Success!")
+                server_code_file.close()
+                print("Generate " + file_id + " Server Code Success!")
+
+        if enable_client_code:
+            with open(file_path + config_data['client_code_path'] + file_config["upper_case"] + config_data['client_file_suffix'] + config_data['client_file_extension'], 'w', encoding='utf-8') as client_code_file:
+
+                client_code_file.write("#pragma once\n")
+                client_code_file.write("\n")
+                client_code_file.write(
+                    "//Exported by Excel, please don't edit this file directly.\n")
+                client_code_file.write("\n")
+                client_code_file.write(
+                    "#include \"" + config_data['type_def_file'] + "\"\n")
+                client_code_file.write("#include \"Engine/DataTable.h\"\n")
+                client_code_file.write(
+                    "#include \"" + file_config["upper_case"] + config_data['client_file_suffix'] + ".generated.h\"\n")
+                client_code_file.write("\n")
+                client_code_file.write("USTRUCT(BlueprintType)\n")
+                client_code_file.write(
+                    "struct F" + file_config["upper_case"] + " : public FTableRowBase\n")
+                client_code_file.write("{\n")
+                client_code_file.write("\tGENERATED_USTRUCT_BODY()\n")
+                client_code_file.write("\n")
+
+                for data_index in range(len(csv_head_list)):
+                    client_code_file.write(
+                        "\tUPROPERTY(EditAnywhere, BlueprintReadWrite, Category = F" + file_config["upper_case"] + ")\n")
+                    client_code_file.write("\t\t")
+                    client_code_file.write(
+                        get_client_data_type(data_type_list[data_index]))
+                    client_code_file.write(" ")
+                    client_code_file.write(csv_head_list[data_index])
+                    client_code_file.write(";\n")
+
+                client_code_file.write("};\n")
+
+                client_code_file.close()
+                print("Generate " + file_id + " Client Code Success!")
 
         break
 
@@ -340,14 +436,16 @@ def write_file_content(write_file_path, start_key, end_key, content):
     file_content = ""
     with open(write_file_path, 'r', encoding='utf-8') as target_file:
         file_content = target_file.read()
+        start_index = file_content.find(start_key)
+        if start_index == -1:
+            return
+        head_end_index = file_content.find(end_key)
+        if head_end_index == -1:
+            return
         start_content = ""
         end_content = ""
-        start_index = file_content.find(start_key)
-        if start_index != -1:
-            start_content = file_content[:(start_index + len(start_key))]
-        head_end_index = file_content.find(end_key)
-        if head_end_index != -1:
-            end_content = file_content[head_end_index:]
+        start_content = file_content[:(start_index + len(start_key))]
+        end_content = file_content[head_end_index:]
         file_content = start_content + content + end_content
 
     with open(write_file_path, 'w', encoding='utf-8') as target_file:
@@ -355,24 +453,81 @@ def write_file_content(write_file_path, start_key, end_key, content):
 
 
 def register_datatable():
-    code_header_content = "\n"
-    code_register_content = "\n"
-    code_declare_content = "\n"
+    server_header_content = "\n"
+    server_register_content = "\n"
+    server_declare_content = "\n"
+    client_header_content = "\n"
+    client_register_content = "\n"
+    data_table_type = "\nenum EDataTableType\n{\n"
+    data_table_escape = "\n"
+
+    register_config = config_data["register"]
 
     for file_id in file_dict:
-        code_header_content += "#include \"" + \
-            config_data[file_id]["lower_case"] + ".h\"\n"
-        code_register_content += "\t, REGISTER_DATATABLE(" + \
-            config_data[file_id]["upper_case"] + ")\n"
-        code_declare_content += "\tDECLARE_DATATABLE(" + \
-            config_data[file_id]["upper_case"] + ")\n"
 
-    write_file_content(file_path + config_data['code_path'] + "data_table_manager.h", "//Don't edit the following content.DATATABLE_HEADER_START",
-                       "//Don't edit the above content.DATATABLE_HEADER_END", code_header_content)
-    write_file_content(file_path + config_data['code_path'] + "data_table_manager.h", "//Don't edit the following content.DATATABLE_DECLARE_START",
-                       "//Don't edit the above content.DATATABLE_DECLARE_END", code_declare_content)
-    write_file_content(file_path + config_data['code_path'] + "data_table_manager.cpp", "//Don't edit the following content.DATATABLE_REGISTER_START",
-                       "//Don't edit the above content.DATATABLE_REGISTER_END", code_register_content)
+        file_config = config_data[file_id]
+
+        enable_server_code = False
+        if "enable_server_code" in config_data \
+                and config_data["enable_server_code"] == True \
+                and "enable_server_code" in file_config \
+                and file_config["enable_server_code"] == True:
+            enable_server_code = True
+
+        enable_client_code = False
+        if "enable_client_code" in config_data \
+                and config_data["enable_client_code"] == True \
+                and "enable_client_code" in file_config \
+                and file_config["enable_client_code"] == True:
+            enable_client_code = True
+
+        if enable_server_code:
+            server_header_content += "#include \"" + \
+                file_config["lower_case"] + config_data['server_file_suffix'] + \
+                config_data['server_file_extension'] + "\"\n"
+            server_register_content += "\t\t\t, REGISTER_DATATABLE_SERVER(" + \
+                file_config["upper_case"] + ")\n"
+            server_declare_content += "\t\tDECLARE_DATATABLE_SERVER(" + \
+                file_config["upper_case"] + ")\n"
+        if enable_client_code:
+            client_header_content += "#include \"" + \
+                file_config["upper_case"] + config_data['client_file_suffix'] + \
+                config_data['client_file_extension'] + "\"\n"
+            client_register_content += "\tREGISTER_DATATABLE_CLIENT(" + \
+                file_config["upper_case"] + ")\n"
+        data_table_type += "\tEDataTableType_" + \
+            file_config["upper_case"]+" = "+file_id+",\n"
+        data_table_escape += "#define " + \
+            file_config["upper_case"] + " F" + \
+            file_config["upper_case"]+"\n"
+
+    data_table_type += "\tEDataTableType_Max\n};\n"
+
+    if enable_server_code:
+        write_file_content(file_path + config_data['server_code_path'] + "data_table_manager.h",
+                           register_config["server_header_start"], register_config["server_header_end"], server_header_content)
+        write_file_content(file_path + config_data['server_code_path'] + "data_table_manager.h",
+                           register_config["server_declare_start"], register_config["server_declare_end"], server_declare_content)
+        write_file_content(file_path + config_data['server_code_path'] + "data_table_manager.cpp",
+                           register_config["server_register_start"], register_config["server_register_end"], server_register_content)
+
+    if enable_client_code:
+        write_file_content(file_path + config_data['client_code_path'] + "DataTableManager.h",
+                           register_config["client_header_start"], register_config["client_header_end"], client_header_content)
+        write_file_content(file_path + config_data['client_code_path'] + "DataTableManager.cpp",
+                           register_config["client_register_start"], register_config["client_register_end"], client_register_content)
+
+    write_file_content(file_path + config_data['data_table_register_path'] + config_data["data_table_register_file"],
+                       register_config["type_start"], register_config["type_end"], data_table_type)
+
+    enable_escape = False
+    if "enable_escape" in register_config \
+            and register_config["enable_escape"] == True:
+        enable_escape = True
+
+    if enable_escape:
+        write_file_content(file_path + config_data['data_table_register_path'] + config_data["data_table_register_file"],
+                           register_config["escape_start"], register_config["escape_end"], data_table_escape)
 
     print("Register DataTable Success!")
 
@@ -394,7 +549,7 @@ def process_all_file():
     print("0.register_datatable")
     print("1.export_data")
     print("2.generate_code & export_data")
-    choose_idx = input("plase choose : ")
+    choose_idx = input("please choose : ")
 
     if choose_idx == "0":
         register_datatable()

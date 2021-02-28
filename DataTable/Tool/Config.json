@@ -1,21 +1,39 @@
 {
+    "namespace": "data",
     "export_path": ".\\Export\\",
-    "code_path": "..\\Project\\DataTable\\",
-    "100": {
-        "upper_case": "StringDataTable",
-        "lower_case": "string_data_table",
-        "sheet_list": [
-            {
-                "sheet_name": "Sheet1",
-                "data_id_row": 4,
-                "data_id_col": 2,
-                "export_type": "Horizontal"
-            }
-        ]
+    "enable_client_code": true,
+    "client_code_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\DataTable\\",
+    "client_file_suffix": "_C",
+    "client_file_extension": ".h",
+    "enable_server_code": true,
+    "server_code_path": "..\\Project\\DataTableServer\\Source\\DataTable\\",
+    "server_file_suffix": "_s",
+    "server_file_extension": ".h",
+    "data_table_register_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\Public\\Def\\",
+    "data_table_register_file": "data_table_register.hpp",
+    "type_def_file": "type_def.hpp",
+    "register": {
+        "server_header_start": "//Don't edit the following content.SERVER_DATATABLE_HEADER_START",
+        "server_header_end": "//Don't edit the above content.SERVER_DATATABLE_HEADER_END",
+        "server_declare_start": "//Don't edit the following content.SERVER_DATATABLE_DECLARE_START",
+        "server_declare_end": "//Don't edit the above content.SERVER_DATATABLE_DECLARE_END",
+        "server_register_start": "//Don't edit the following content.SERVER_DATATABLE_REGISTER_START",
+        "server_register_end": "//Don't edit the above content.SERVER_DATATABLE_REGISTER_END",
+        "client_header_start": "//Don't edit the following content.CLIENT_DATATABLE_HEADER_START",
+        "client_header_end": "//Don't edit the above content.CLIENT_DATATABLE_HEADER_END",
+        "client_register_start": "//Don't edit the following content.CLIENT_DATATABLE_REGISTER_START",
+        "client_register_end": "//Don't edit the above content.CLIENT_DATATABLE_REGISTER_END",
+        "type_start": "//Don't edit the following content.CLIENT_DATATABLE_TYPE_START",
+        "type_end": "//Don't edit the above content.CLIENT_DATATABLE_TYPE_END",
+        "enable_escape": true,
+        "escape_start": "//Don't edit the following content.CLIENT_DATATABLE_ESCAPE_START",
+        "escape_end": "//Don't edit the above content.CLIENT_DATATABLE_ESCAPE_END"
     },
-    "101": {
+    "100": {
         "upper_case": "ConfigDataTable",
         "lower_case": "config_data_table",
+        "enable_server_code": true,
+        "enable_client_code": true,
         "sheet_list": [
             {
                 "sheet_name": "Sheet1",
@@ -25,9 +43,25 @@
             }
         ]
     },
-    "102": {
+    "101": {
+        "upper_case": "StringDataTable",
+        "lower_case": "string_data_table",
+        "enable_server_code": true,
+        "enable_client_code": true,
+        "sheet_list": [
+            {
+                "sheet_name": "Sheet1",
+                "data_id_row": 4,
+                "data_id_col": 2,
+                "export_type": "Horizontal"
+            }
+        ]
+    },
+    "900": {
         "upper_case": "ExampleDataTable",
         "lower_case": "example_data_table",
+        "enable_server_code": true,
+        "enable_client_code": true,
         "sheet_list": [
             {
                 "sheet_name": "Sheet1",

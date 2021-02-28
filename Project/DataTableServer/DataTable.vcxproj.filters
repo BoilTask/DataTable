@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{7505f9b1-57d8-48d8-a122-720a18f9d88c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DataTable">
+      <UniqueIdentifier>{8346dcab-276d-4b60-8c23-eee1b057a896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Def">
+      <UniqueIdentifier>{c8203f7e-10b9-4c26-b54a-9494fb1e6769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Public">
+      <UniqueIdentifier>{18f469b1-9211-4641-9f4e-df33c032de1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Public\Def">
+      <UniqueIdentifier>{e7f3bb08-9966-44dd-9cd4-a1858dde6b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Public\Common">
+      <UniqueIdentifier>{de3bf246-ef38-4301-9fc6-de65f7f8a15e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\DataTable.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DataTable\data_table_manager.cpp">
+      <Filter>Source\DataTable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DataTable\data_csv_parser.cpp">
+      <Filter>Source\DataTable</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\data_table_def.hpp">
+      <Filter>Source\Public\Def</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\data_table_register.hpp">
+      <Filter>Source\Public\Def</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\type_def.hpp">
+      <Filter>Source\Public\Def</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Def\game_def_s.h">
+      <Filter>Source\Def</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Def\type_def_s.h">
+      <Filter>Source\Def</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\data_table_base.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\data_table_manager.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\data_table_template.hpp">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\example_data_table_s.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\string_data_table_s.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\config_data_table_s.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\data_csv_parser.h">
+      <Filter>Source\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Common\singleton.hpp">
+      <Filter>Source\Public\Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
