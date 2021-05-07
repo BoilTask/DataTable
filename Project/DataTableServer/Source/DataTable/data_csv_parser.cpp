@@ -135,7 +135,6 @@ namespace data
 		{
 			if (item_index + 1 >= str_line.length())
 			{
-				item_list.push_back(item);
 				break;
 			}
 			if (str_line[item_index] == '\\')
