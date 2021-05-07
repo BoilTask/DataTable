@@ -2,15 +2,21 @@
     "namespace": "data",
     "export_path": ".\\Export\\",
     "enable_client_code": true,
-    "client_code_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\DataTable\\",
+    "client_code_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\DataTable\\DataTable\\",
     "client_file_suffix": "_C",
     "client_file_extension": ".h",
+    "client_register_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\DataTable\\",
     "enable_server_code": true,
-    "server_code_path": "..\\Project\\DataTableServer\\Source\\DataTable\\",
+    "server_code_path": "..\\Project\\DataTableServer\\Source\\DataTable\\DataTable\\",
     "server_file_suffix": "_s",
     "server_file_extension": ".h",
-    "data_table_register_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\Public\\Def\\",
-    "data_table_register_file": "data_table_register.hpp",
+    "server_register_path": "..\\Project\\DataTableServer\\Source\\DataTable\\",
+    "data_table_type_register_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\Public\\Def\\",
+    "data_table_type_register_file": "data_table_register.hpp",
+    "enum_def_server_path": "..\\Project\\DataTableServer\\Source\\Def\\",
+    "enum_def_server_file": "data_def_s.h",
+    "enum_def_client_path": "..\\Project\\DataTableGame\\Source\\DataTableGame\\Def\\",
+    "enum_def_client_file": "data_def_c.h",
     "type_def_file": "type_def.hpp",
     "register": {
         "server_header_start": "//Don't edit the following content.SERVER_DATATABLE_HEADER_START",
@@ -71,9 +77,9 @@
             },
             {
                 "sheet_name": "Sheet2",
-                "data_id_row": 4,
-                "data_id_col": 2,
-                "export_type": "Horizontal"
+                "data_id_row": 5,
+                "data_id_col": 3,
+                "export_type": "Vertical"
             }
         ]
     }

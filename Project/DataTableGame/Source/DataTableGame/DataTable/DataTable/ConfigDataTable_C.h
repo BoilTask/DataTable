@@ -3,6 +3,7 @@
 //Exported by Excel, please don't edit this file directly.
 
 #include "type_def.hpp"
+#include "data_def_c.h"
 #include "Engine/DataTable.h"
 #include "ConfigDataTable_C.generated.h"
 

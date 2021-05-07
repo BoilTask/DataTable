@@ -3,6 +3,7 @@
 //Exported by Excel, please don't edit this file directly.
 
 #include "type_def.hpp"
+#include "data_def_c.h"
 #include "Engine/DataTable.h"
 #include "ExampleDataTable_C.generated.h"
 
@@ -24,6 +25,8 @@ struct FExampleDataTable : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		int32 BitType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		TEnumAsByte<EEnumType> EnumType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<bool> VectorBoolType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<int32> VectorInt32Type;
@@ -31,4 +34,6 @@ struct FExampleDataTable : public FTableRowBase
 		TArray<float> VectorFloatType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<FString> VectorStringType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		TArray<TEnumAsByte<EEnumType2>> EnumTypeList;
 };

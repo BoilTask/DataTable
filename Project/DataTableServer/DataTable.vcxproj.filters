@@ -19,6 +19,9 @@
     <Filter Include="Source\Public\Common">
       <UniqueIdentifier>{de3bf246-ef38-4301-9fc6-de65f7f8a15e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\DataTable\DataTable">
+      <UniqueIdentifier>{e5d9793f-a6af-4216-95f3-9c44dec0d0da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DataTable.cpp">
@@ -56,20 +59,20 @@
     <ClInclude Include="Source\DataTable\data_table_template.hpp">
       <Filter>Source\DataTable</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DataTable\example_data_table_s.h">
-      <Filter>Source\DataTable</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DataTable\string_data_table_s.h">
-      <Filter>Source\DataTable</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DataTable\config_data_table_s.h">
-      <Filter>Source\DataTable</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DataTable\data_csv_parser.h">
       <Filter>Source\DataTable</Filter>
     </ClInclude>
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Common\singleton.hpp">
       <Filter>Source\Public\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\DataTable\config_data_table_s.h">
+      <Filter>Source\DataTable\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\DataTable\example_data_table_s.h">
+      <Filter>Source\DataTable\DataTable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DataTable\DataTable\string_data_table_s.h">
+      <Filter>Source\DataTable\DataTable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

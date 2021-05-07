@@ -5,7 +5,10 @@
 #include <list>
 #include <vector>
 #include <bitset>
+#include <map>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 #ifdef DATATABLE_GAME
 #include "DataTableGame.h"

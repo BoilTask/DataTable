@@ -18,11 +18,11 @@ namespace data
 	
 	void DataTableManager::Init()
 	{
-		const ConfigDataTable* config_datatable_ptr = DATATABLE_GET_CONFIG();
-		if (config_datatable_ptr && config_datatable_ptr->EnableGame)
+		const ConfigDataTable* config_data_table_ptr = DATATABLE_GET_CONFIG();
+		if (config_data_table_ptr && config_data_table_ptr->EnableGame)
 		{
 			is_init_success_ = true;
-
+			
 			std::cout << "DataTableManager Init Success!" << std::endl;
 		}
 		else

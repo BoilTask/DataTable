@@ -3,6 +3,7 @@
 //Exported by Excel, please don't edit this file directly.
 
 #include "type_def.hpp"
+#include "data_def_s.h"
 #include "data_table_base.h"
 #include "data_csv_parser.h"
 

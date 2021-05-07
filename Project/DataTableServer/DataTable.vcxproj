@@ -28,13 +28,13 @@
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\data_table_def.hpp" />
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\data_table_register.hpp" />
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\type_def.hpp" />
-    <ClInclude Include="Source\DataTable\config_data_table_s.h" />
+    <ClInclude Include="Source\DataTable\DataTable\config_data_table_s.h" />
+    <ClInclude Include="Source\DataTable\DataTable\example_data_table_s.h" />
+    <ClInclude Include="Source\DataTable\DataTable\string_data_table_s.h" />
     <ClInclude Include="Source\DataTable\data_csv_parser.h" />
     <ClInclude Include="Source\DataTable\data_table_base.h" />
     <ClInclude Include="Source\DataTable\data_table_manager.h" />
     <ClInclude Include="Source\DataTable\data_table_template.hpp" />
-    <ClInclude Include="Source\DataTable\example_data_table_s.h" />
-    <ClInclude Include="Source\DataTable\string_data_table_s.h" />
     <ClInclude Include="Source\Def\game_def_s.h" />
     <ClInclude Include="Source\Def\type_def_s.h" />
   </ItemGroup>
@@ -153,7 +153,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DATATABLE_SERVER;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./Source/Def;./Source/DataTable;../DataTableGame/Source/DataTableGame/Public/Def;../DataTableGame/Source/DataTableGame/Public/Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Source/Def;./Source/DataTable;./Source/DataTable/DataTable;../DataTableGame/Source/DataTableGame/Public/Def;../DataTableGame/Source/DataTableGame/Public/Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>

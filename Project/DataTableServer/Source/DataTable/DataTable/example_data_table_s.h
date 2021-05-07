@@ -3,6 +3,7 @@
 //Exported by Excel, please don't edit this file directly.
 
 #include "type_def.hpp"
+#include "data_def_s.h"
 #include "data_table_base.h"
 #include "data_csv_parser.h"
 
@@ -20,10 +21,12 @@ namespace data
 			csv_parser.ParseFloat(FloatType);
 			csv_parser.ParseString(StringType);
 			csv_parser.ParseInt(BitType);
+			csv_parser.ParseEnum<EEnumType>(EnumType);
 			csv_parser.ParseVectorBool(VectorBoolType);
 			csv_parser.ParseVectorInt(VectorInt32Type);
 			csv_parser.ParseVectorFloat(VectorFloatType);
 			csv_parser.ParseVectorString(VectorStringType);
+			csv_parser.ParseVectorEnum<EEnumType2>(EnumTypeList);
 		};
 
 		int32 DataId;
@@ -32,9 +35,11 @@ namespace data
 		float FloatType;
 		std::string StringType;
 		int32 BitType;
+		EEnumType EnumType;
 		std::vector<bool> VectorBoolType;
 		std::vector<int32> VectorInt32Type;
 		std::vector<float> VectorFloatType;
 		std::vector<std::string> VectorStringType;
+		std::vector<EEnumType2> EnumTypeList;
 	};
 }

@@ -1,27 +1,29 @@
-#ifndef __SINGLETON_HPP__
-#define __SINGLETON_HPP__
 
-namespace data {
+#pragma once
 
-	template<typename T>
-	class Singleton {
+namespace data
+{
+	template <typename T>
+	class Singleton
+	{
 	protected:
-		Singleton() {}
-	public:
-		static T& GetInstance() {
-			if (!m_pInstance) {
-				m_pInstance = new T();
-			}
-			return *m_pInstance;
+		Singleton()
+		{
 		}
-	private:
-		Singleton(Singleton& rhs) {};
-		Singleton const& operator = (Singleton& rhs) {};
 	protected:
-		static T* m_pInstance;
+		static T* instance_ptr_;
+
+	public:
+		static T& GetInstance()
+		{
+			if (!instance_ptr_)
+			{
+				instance_ptr_ = new T();
+			}
+			return *instance_ptr_;
+		}
 	};
 
-	template<typename T> T* Singleton<T>::m_pInstance = nullptr;
+	template <typename T>
+	T* Singleton<T>::instance_ptr_ = nullptr;
 }
-
-#endif //__SINGLETON_HPP__

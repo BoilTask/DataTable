@@ -23,6 +23,8 @@ public class DataTableGame : ModuleRules
 		PrivateIncludePaths.AddRange(new string[] {
 			"DataTableGame"
 			, "DataTableGame/DataTable"
+			, "DataTableGame/DataTable/DataTable"
+			, "DataTableGame/Def"
 			, "DataTableGame/Public"
 			, "DataTableGame/Public/Common"
 			, "DataTableGame/Public/Def"
