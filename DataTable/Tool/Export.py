@@ -65,7 +65,11 @@ def is_data_false(data):
 
 def get_enum_value(enum_type, enum_value):
     if enum_type in enum_json_data:
-        return enum_json_data[enum_type].index(enum_value)
+        enum_list = list(enum_json_data[enum_type].keys())
+        index = 0
+        if "#" in enum_list:
+            index = -1
+        return index + enum_list.index(enum_value)
     return 0
 
 
@@ -618,15 +622,25 @@ def generate_enum():
 
                 for enum_type in enum_json_data:
                     server_code_file.write("\n")
-                    server_code_file.write("\tenum "+enum_type+"\n")
+                    server_code_file.write("\tenum "+enum_type)
+                    if "#" in enum_json_data[enum_type]:
+                        enum_comment = enum_json_data[enum_type]["#"]
+                        if enum_comment != "":
+                            server_code_file.write(" //"+enum_comment)
+                    server_code_file.write("\n")
                     server_code_file.write("\t{")
-                    is_first = True
-                    for enum_data in enum_json_data[enum_type]:
-                        if is_first:
-                            is_first = False
-                        else:
+
+                    enum_data_list = list(enum_json_data[enum_type].keys())
+                    for index in range(len(enum_data_list)):
+                        enum_data = enum_data_list[index]
+                        if enum_data == "#":
+                            continue
+                        server_code_file.write("\n\t\t"+enum_data)
+                        if(index != len(enum_data_list)-1):
                             server_code_file.write(",")
-                        server_code_file.write("\n\t\t"+enum_data+"")
+                        if(enum_json_data[enum_type][enum_data] != ""):
+                            server_code_file.write(
+                                " //"+enum_json_data[enum_type][enum_data])
                     server_code_file.write("\n\t};\n")
 
                 server_code_file.write("}\n")
@@ -645,18 +659,29 @@ def generate_enum():
                     "#include \"" + config_json_data['type_def_file'] + "\"\n")
 
                 for enum_type in enum_json_data:
+
                     client_code_file.write("\n")
                     client_code_file.write(
                         "UENUM(BlueprintType, Blueprintable)\n")
-                    client_code_file.write("enum "+enum_type+"\n")
+                    client_code_file.write("enum "+enum_type)
+                    if "#" in enum_json_data[enum_type]:
+                        enum_comment = enum_json_data[enum_type]["#"]
+                        if enum_comment != "":
+                            client_code_file.write(" //"+enum_comment)
+                    client_code_file.write("\n")
                     client_code_file.write("{")
-                    is_first = True
-                    for enum_data in enum_json_data[enum_type]:
-                        if is_first:
-                            is_first = False
-                        else:
+
+                    enum_data_list = list(enum_json_data[enum_type].keys())
+                    for index in range(len(enum_data_list)):
+                        enum_data = enum_data_list[index]
+                        if enum_data == "#":
+                            continue
+                        client_code_file.write("\n\t"+enum_data)
+                        if(index != len(enum_data_list)-1):
                             client_code_file.write(",")
-                        client_code_file.write("\n\t"+enum_data+"")
+                        if(enum_json_data[enum_type][enum_data] != ""):
+                            client_code_file.write(
+                                " //"+enum_json_data[enum_type][enum_data])
                     client_code_file.write("\n};\n")
 
                 client_code_file.close()
