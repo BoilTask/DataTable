@@ -64,13 +64,19 @@ def is_data_false(data):
 
 
 def get_enum_value(enum_type, enum_value):
-    if enum_type in enum_json_data:
-        enum_list = list(enum_json_data[enum_type].keys())
-        index = 0
-        if "#" in enum_list:
-            index = -1
-        return index + enum_list.index(enum_value)
-    return 0
+    return enum_value_data[enum_type][enum_value]
+
+
+def get_enum_type_comment(enum_type):
+    if("#" in enum_json_data[enum_type]):
+        return enum_json_data[enum_type]["#"]
+    return ""
+
+
+def get_enum_comment(enum_type, enum_value):
+    if("#" in enum_json_data[enum_type][enum_value]):
+        return enum_json_data[enum_type][enum_value]["#"]
+    return ""
 
 
 def get_server_data_type(data_type):
@@ -624,7 +630,7 @@ def generate_enum():
                     server_code_file.write("\n")
                     server_code_file.write("\tenum "+enum_type)
                     if "#" in enum_json_data[enum_type]:
-                        enum_comment = enum_json_data[enum_type]["#"]
+                        enum_comment = get_enum_type_comment(enum_type)
                         if enum_comment != "":
                             server_code_file.write(" //"+enum_comment)
                     server_code_file.write("\n")
@@ -636,11 +642,14 @@ def generate_enum():
                         if enum_data == "#":
                             continue
                         server_code_file.write("\n\t\t"+enum_data)
+                        server_code_file.write(" = ")
+                        server_code_file.write(
+                            str(get_enum_value(enum_type, enum_data)))
                         if(index != len(enum_data_list)-1):
                             server_code_file.write(",")
-                        if(enum_json_data[enum_type][enum_data] != ""):
-                            server_code_file.write(
-                                " //"+enum_json_data[enum_type][enum_data])
+                        enum_comment = get_enum_comment(enum_type, enum_data)
+                        if(enum_comment != ""):
+                            server_code_file.write(" //"+enum_comment)
                     server_code_file.write("\n\t};\n")
 
                 server_code_file.write("}\n")
@@ -665,7 +674,7 @@ def generate_enum():
                         "UENUM(BlueprintType, Blueprintable)\n")
                     client_code_file.write("enum "+enum_type)
                     if "#" in enum_json_data[enum_type]:
-                        enum_comment = enum_json_data[enum_type]["#"]
+                        enum_comment = get_enum_type_comment(enum_type)
                         if enum_comment != "":
                             client_code_file.write(" //"+enum_comment)
                     client_code_file.write("\n")
@@ -677,11 +686,14 @@ def generate_enum():
                         if enum_data == "#":
                             continue
                         client_code_file.write("\n\t"+enum_data)
+                        client_code_file.write(" = ")
+                        client_code_file.write(
+                            str(get_enum_value(enum_type, enum_data)))
                         if(index != len(enum_data_list)-1):
                             client_code_file.write(",")
-                        if(enum_json_data[enum_type][enum_data] != ""):
-                            client_code_file.write(
-                                " //"+enum_json_data[enum_type][enum_data])
+                        enum_comment = get_enum_comment(enum_type, enum_data)
+                        if(enum_comment != ""):
+                            client_code_file.write(" //"+enum_comment)
                     client_code_file.write("\n};\n")
 
                 client_code_file.close()
@@ -719,6 +731,13 @@ def process_all_file():
             export_data(file_key)
 
 
+def add_enum_value_data(key_a, key_b, val):
+    if key_a in enum_value_data:
+        enum_value_data[key_a].update({key_b: val})
+    else:
+        enum_value_data.update({key_a: {key_b: val}})
+
+
 # 设置环境变量
 file_path = os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(file_path)
@@ -733,6 +752,21 @@ with open('../Config/Config.json', 'r', encoding='utf-8') as config_json_file:
 with open('../Config/Enum.json', 'r', encoding='utf-8') as enum_json_file:
     enum_json_data = json.loads(enum_json_file.read())
     enum_json_file.close()
+
+enum_value_data = {}
+
+for enum_type in enum_json_data:
+    enum_list = list(enum_json_data[enum_type].keys())
+    enum_index = 0
+    for enum_data in enum_list:
+        if enum_data == "#":
+            continue
+        enum_value = enum_json_data[enum_type][enum_data]
+        if "Value" in enum_value:
+            enum_index = int(enum_value["Value"])
+        add_enum_value_data(enum_type, enum_data, enum_index)
+        enum_index = enum_index + 1
+
 
 if is_config_file_valid():
     # 取数据表
