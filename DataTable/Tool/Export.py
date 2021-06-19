@@ -470,7 +470,7 @@ def generate_code(file_id):
                             data_type_list.append(cell.value)
 
         if enable_server_code:
-            with open(file_path + config_json_data['server_code_path'] + file_config["lower_case"] + config_json_data['server_file_suffix'] + config_json_data['server_file_extension'], 'w', encoding='utf-8') as server_code_file:
+            with open(file_path + config_json_data['server_code_path'] + file_config["lower_case"] + config_json_data['server_file_suffix'] + config_json_data['server_file_extension'], 'w', encoding='gbk') as server_code_file:
 
                 server_code_file.write("#pragma once\n")
                 server_code_file.write("\n")
@@ -514,7 +514,7 @@ def generate_code(file_id):
                 print("Generate " + file_id + " Server Code Success!")
 
         if enable_client_code:
-            with open(file_path + config_json_data['client_code_path'] + file_config["upper_case"] + config_json_data['client_file_suffix'] + config_json_data['client_file_extension'], 'w', encoding='utf-8') as client_code_file:
+            with open(file_path + config_json_data['client_code_path'] + file_config["upper_case"] + config_json_data['client_file_suffix'] + config_json_data['client_file_extension'], 'w', encoding='gbk') as client_code_file:
 
                 client_code_file.write("#pragma once\n")
                 client_code_file.write("\n")
@@ -563,7 +563,7 @@ def write_file_content(write_file_path, start_key, end_key, content):
         end_content = file_content[head_end_index:]
         file_content = start_content + content + end_content
 
-    with open(write_file_path, 'w', encoding='utf-8') as target_file:
+    with open(write_file_path, 'w', encoding='gbk') as target_file:
         target_file.write(file_content)
 
 
@@ -668,7 +668,7 @@ def generate_enum():
             enable_client_code = True
 
         if enable_server_code:
-            with open(file_path + config_json_data['enum_def_server_path'] + config_json_data['enum_def_server_file'], 'w', encoding='utf-8') as server_code_file:
+            with open(file_path + config_json_data['enum_def_server_path'] + config_json_data['enum_def_server_file'], 'w', encoding='gbk') as server_code_file:
 
                 server_code_file.write("#pragma once\n")
                 server_code_file.write("\n")
@@ -713,7 +713,7 @@ def generate_enum():
                 server_code_file.close()
 
         if enable_client_code:
-            with open(file_path + config_json_data['enum_def_client_path'] + config_json_data['enum_def_client_file'], 'w', encoding='utf-8') as client_code_file:
+            with open(file_path + config_json_data['enum_def_client_path'] + config_json_data['enum_def_client_file'], 'w', encoding='gbk') as client_code_file:
 
                 client_code_file.write("#pragma once\n")
                 client_code_file.write("\n")
