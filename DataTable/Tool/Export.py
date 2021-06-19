@@ -3,7 +3,7 @@
 import os
 import sys
 import json
-import xlrd
+import openpyxl
 
 
 def is_config_file_valid():
@@ -272,7 +272,7 @@ def parse_data(data_type, data):
 
 
 def export_data(file_id):
-    excel_file = xlrd.open_workbook(file_path + file_dict[file_id])
+    excel_file = openpyxl.load_workbook(file_path + file_dict[file_id])
     file_config = config_json_data[file_id]
     sheet_list = file_config["sheet_list"]
 
@@ -280,24 +280,48 @@ def export_data(file_id):
     with open(file_path + config_json_data['export_path'] + file_config["upper_case"] + ".csv", 'w', encoding='utf-8') as export_file:
         for sheet_info in sheet_list:
 
-            excel_sheet = excel_file.sheet_by_name(sheet_info["sheet_name"])
+            excel_sheet = excel_file[sheet_info["sheet_name"]]
 
             data_id_row = sheet_info["data_id_row"] - 1
             data_id_col = sheet_info["data_id_col"] - 1
 
-            data_id_value = excel_sheet.cell_value(data_id_row, data_id_col)
+            data_id_value = excel_sheet.cell(row=data_id_row+1, column=data_id_col+1).value
+
             if data_id_value != "DataId":
                 print("DataId row or col not valid!")
                 return
 
-            data_id_row_value = excel_sheet.row_values(data_id_row)
-            data_id_col_value = excel_sheet.col_values(data_id_col)
-            data_id_row_max = len(data_id_col_value)
-            data_id_col_max = len(data_id_row_value)
+            excel_sheet_rows_data = tuple(excel_sheet.rows)
+            excel_sheet_cols_data = tuple(excel_sheet.columns)
+
+            data_id_row_value_list = excel_sheet_rows_data[data_id_row]
+            data_id_col_value_list = excel_sheet_cols_data[data_id_col]
+
+            data_row_max = len(data_id_col_value_list)
+            data_col_max = len(data_id_row_value_list)
+
             if sheet_info["export_type"] == "Horizontal":
 
-                csv_head_list = data_id_row_value[data_id_col:]
-                data_type_list = excel_sheet.row_values(data_id_row - 1)
+                csv_head_list = []
+                for cell in excel_sheet_rows_data[data_id_row][data_id_col: data_col_max]:
+                    if cell.value in [None, ""]:
+                        break
+                    csv_head_list.append(cell.value)
+
+                csv_data_id_list = []
+                for cell in excel_sheet_cols_data[data_id_col][data_id_row + 1: data_row_max]:
+                    if cell.value in [None, ""]:
+                        break
+                    csv_data_id_list.append(cell.value)
+
+                data_type_list = []
+                for cell in excel_sheet_rows_data[data_id_row - 1][data_id_col: data_col_max]:
+                    if cell.value in [None, ""]:
+                        break
+                    data_type_list.append(cell.value)
+
+                data_col_count = len(csv_head_list)
+                data_row_count = len(csv_data_id_list)
 
                 if is_first_sheet:
                     is_first_sheet = False
@@ -307,25 +331,45 @@ def export_data(file_id):
                         export_file.write(csv_head)
                     export_file.write("\n")
 
-                for data_id_item in range(data_id_row + 1, data_id_row_max):
-                    data_row = excel_sheet.row_values(data_id_item)
+                for row_index in range(0, data_row_count):
+                    
+                    data_type = data_type_list[0]
+                    data_value = excel_sheet_rows_data[data_id_row + 1 + row_index][data_id_col].value
+                    export_file.write(parse_data(data_type, data_value))
 
-                    export_file.write(parse_data(
-                        data_type_list[data_id_col], data_row[data_id_col]))
+                    for col_index in range(0, data_col_count):
 
-                    for data_item in range(data_id_col, data_id_col_max):
+                        data_type = data_type_list[col_index]
+                        data_value = excel_sheet_rows_data[data_id_row + 1 + row_index][data_id_col + col_index].value
+
                         export_file.write(",")
                         export_file.write("\"")
-
-                        export_file.write(parse_data(
-                            data_type_list[data_item], data_row[data_item]))
-
+                        export_file.write(parse_data(data_type, data_value))
                         export_file.write("\"")
                     export_file.write("\n")
+
             elif sheet_info["export_type"] == "Vertical":
 
-                csv_head_list = data_id_col_value[data_id_row:]
-                data_type_list = excel_sheet.col_values(data_id_col - 1)
+                csv_head_list = []
+                for cell in excel_sheet_cols_data[data_id_col][data_id_row: data_row_max]:
+                    if cell.value in [None, ""]:
+                        break
+                    csv_head_list.append(cell.value)
+
+                csv_data_id_list = []
+                for cell in excel_sheet_rows_data[data_id_row][data_id_col + 1: data_col_max]:
+                    if cell.value in [None, ""]:
+                        break
+                    csv_data_id_list.append(cell.value)
+
+                data_type_list = []
+                for cell in excel_sheet_cols_data[data_id_col - 1][data_id_row: data_row_max]:
+                    if cell.value in [None, ""]:
+                        break
+                    data_type_list.append(cell.value)
+
+                data_row_count = len(csv_head_list)
+                data_col_count = len(csv_data_id_list)
 
                 if is_first_sheet:
                     is_first_sheet = False
@@ -335,27 +379,29 @@ def export_data(file_id):
                         export_file.write(csv_head)
                     export_file.write("\n")
 
-                for data_id_item in range(data_id_col + 1, data_id_col_max):
-                    data_row = excel_sheet.col_values(data_id_item)
+                for col_index in range(0, data_col_count):
 
-                    export_file.write(parse_data(
-                        data_type_list[data_id_row], data_row[data_id_row]))
+                    data_type = data_type_list[0]
+                    data_value = excel_sheet_cols_data[data_id_col + 1 + col_index][data_id_row].value
+                    export_file.write(parse_data(data_type, data_value))
+                    
+                    for row_index in range(0, data_row_count):
 
-                    for data_item in range(data_id_row, data_id_row_max):
+                        data_type = data_type_list[row_index]
+                        data_value = excel_sheet_cols_data[data_id_col + 1 + col_index][data_id_row + row_index].value
+
                         export_file.write(",")
                         export_file.write("\"")
-
-                        export_file.write(parse_data(
-                            data_type_list[data_item], data_row[data_item]))
-
+                        export_file.write(parse_data(data_type, data_value))
                         export_file.write("\"")
                     export_file.write("\n")
+
         export_file.close()
         print("Export " + file_id + " Success!")
 
 
 def generate_code(file_id):
-    excel_file = xlrd.open_workbook(file_path + file_dict[file_id])
+    excel_file = openpyxl.load_workbook(file_path + file_dict[file_id])
     file_config = config_json_data[file_id]
     sheet_list = file_config["sheet_list"]
 
@@ -375,60 +421,78 @@ def generate_code(file_id):
 
     for sheet_info in sheet_list:
 
-        excel_sheet = excel_file.sheet_by_name(sheet_info["sheet_name"])
+        excel_sheet = excel_file[sheet_info["sheet_name"]]
 
         data_id_row = sheet_info["data_id_row"] - 1
         data_id_col = sheet_info["data_id_col"] - 1
 
-        data_id_value = excel_sheet.cell_value(data_id_row, data_id_col)
+        data_id_value = excel_sheet.cell(row=data_id_row+1, column=data_id_col+1).value
+
         if data_id_value != "DataId":
             print("DataId row or col not valid!")
             return
 
-        data_id_row_value = excel_sheet.row_values(data_id_row)
-        data_id_col_value = excel_sheet.col_values(data_id_col)
+        excel_sheet_rows_data = tuple(excel_sheet.rows)
+        excel_sheet_cols_data = tuple(excel_sheet.columns)
+
+        data_id_row_value_list = excel_sheet_rows_data[data_id_row]
+        data_id_col_value_list = excel_sheet_cols_data[data_id_col]
+
+        data_row_max = len(data_id_col_value_list)
+        data_col_max = len(data_id_row_value_list)
+        
+        csv_head_list = []
+        data_type_list = []
 
         if sheet_info["export_type"] == "Horizontal":
-            csv_head_list = data_id_row_value[data_id_col:]
-            data_type_list = excel_sheet.row_values(
-                data_id_row - 1)[data_id_col:]
+
+            for cell in excel_sheet_rows_data[data_id_row][data_id_col: data_col_max]:
+                if cell.value in [None, ""]:
+                    break
+                csv_head_list.append(cell.value)
+            
+            for cell in excel_sheet_rows_data[data_id_row - 1][data_id_col: data_col_max]:
+                if cell.value in [None, ""]:
+                    break
+                data_type_list.append(cell.value)
+
         elif sheet_info["export_type"] == "Vertical":
-            csv_head_list = data_id_col_value[data_id_row:]
-            data_type_list = excel_sheet.col_values(
-                data_id_col - 1)[data_id_row:]
+
+            csv_head_list = []
+            for cell in excel_sheet_cols_data[data_id_col][data_id_row: data_row_max]:
+                if cell.value in [None, ""]:
+                    break
+                csv_head_list.append(cell.value)
+
+            for cell in excel_sheet_cols_data[data_id_col - 1][data_id_row: data_row_max]:
+                            if cell.value in [None, ""]:
+                                break
+                            data_type_list.append(cell.value)
 
         if enable_server_code:
             with open(file_path + config_json_data['server_code_path'] + file_config["lower_case"] + config_json_data['server_file_suffix'] + config_json_data['server_file_extension'], 'w', encoding='utf-8') as server_code_file:
 
                 server_code_file.write("#pragma once\n")
                 server_code_file.write("\n")
-                server_code_file.write(
-                    "//Exported by Excel, please don't edit this file directly.\n")
+                server_code_file.write("//Exported by Excel, please don't edit this file directly.\n")
                 server_code_file.write("\n")
-                server_code_file.write(
-                    "#include \"" + config_json_data['type_def_file'] + "\"\n")
-                server_code_file.write(
-                    "#include \"" + config_json_data['enum_def_server_file'] + "\"\n")
+                server_code_file.write("#include \"" + config_json_data['type_def_file'] + "\"\n")
+                server_code_file.write("#include \"" + config_json_data['enum_def_server_file'] + "\"\n")
                 server_code_file.write("#include \"data_table_base.h\"\n")
                 server_code_file.write("#include \"data_csv_parser.h\"\n")
                 server_code_file.write("\n")
-                server_code_file.write(
-                    "namespace "+config_json_data["namespace"]+"\n")
+                server_code_file.write("namespace "+config_json_data["namespace"]+"\n")
                 server_code_file.write("{\n")
-                server_code_file.write(
-                    "\tclass " + file_config["upper_case"] + " : public DataTableBase\n")
+                server_code_file.write("\tclass " + file_config["upper_case"] + " : public DataTableBase\n")
                 server_code_file.write("\t{\n")
                 server_code_file.write("\tpublic:\n")
-                server_code_file.write(
-                    "\t\t" + file_config["upper_case"] + "(std::string data_string)\n")
+                server_code_file.write("\t\t" + file_config["upper_case"] + "(std::string data_string)\n")
                 server_code_file.write("\t\t{\n")
-                server_code_file.write(
-                    "\t\t\tDataCsvParser csv_parser(data_string);\n")
+                server_code_file.write("\t\t\tDataCsvParser csv_parser(data_string);\n")
 
                 for data_index in range(len(csv_head_list)):
                     server_code_file.write("\t\t\tcsv_parser.")
-                    server_code_file.write(
-                        get_parse_function_name(data_type_list[data_index]))
+                    server_code_file.write(get_parse_function_name(data_type_list[data_index]))
                     server_code_file.write("(")
                     server_code_file.write(csv_head_list[data_index])
                     server_code_file.write(");\n")
@@ -438,8 +502,7 @@ def generate_code(file_id):
 
                 for data_index in range(len(csv_head_list)):
                     server_code_file.write("\t\t")
-                    server_code_file.write(
-                        get_server_data_type(data_type_list[data_index]))
+                    server_code_file.write(get_server_data_type(data_type_list[data_index]))
                     server_code_file.write(" ")
                     server_code_file.write(csv_head_list[data_index])
                     server_code_file.write(";\n")
@@ -455,30 +518,23 @@ def generate_code(file_id):
 
                 client_code_file.write("#pragma once\n")
                 client_code_file.write("\n")
-                client_code_file.write(
-                    "//Exported by Excel, please don't edit this file directly.\n")
+                client_code_file.write("//Exported by Excel, please don't edit this file directly.\n")
                 client_code_file.write("\n")
-                client_code_file.write(
-                    "#include \"" + config_json_data['type_def_file'] + "\"\n")
-                client_code_file.write(
-                    "#include \"" + config_json_data['enum_def_client_file'] + "\"\n")
+                client_code_file.write("#include \"" + config_json_data['type_def_file'] + "\"\n")
+                client_code_file.write("#include \"" + config_json_data['enum_def_client_file'] + "\"\n")
                 client_code_file.write("#include \"Engine/DataTable.h\"\n")
-                client_code_file.write(
-                    "#include \"" + file_config["upper_case"] + config_json_data['client_file_suffix'] + ".generated.h\"\n")
+                client_code_file.write("#include \"" + file_config["upper_case"] + config_json_data['client_file_suffix'] + ".generated.h\"\n")
                 client_code_file.write("\n")
                 client_code_file.write("USTRUCT(BlueprintType)\n")
-                client_code_file.write(
-                    "struct F" + file_config["upper_case"] + " : public FTableRowBase\n")
+                client_code_file.write("struct F" + file_config["upper_case"] + " : public FTableRowBase\n")
                 client_code_file.write("{\n")
                 client_code_file.write("\tGENERATED_USTRUCT_BODY()\n")
                 client_code_file.write("\n")
 
                 for data_index in range(len(csv_head_list)):
-                    client_code_file.write(
-                        "\tUPROPERTY(EditAnywhere, BlueprintReadWrite, Category = F" + file_config["upper_case"] + ")\n")
+                    client_code_file.write("\tUPROPERTY(EditAnywhere, BlueprintReadWrite, Category = F" + file_config["upper_case"] + ")\n")
                     client_code_file.write("\t\t")
-                    client_code_file.write(
-                        get_client_data_type(data_type_list[data_index]))
+                    client_code_file.write(get_client_data_type(data_type_list[data_index]))
                     client_code_file.write(" ")
                     client_code_file.write(csv_head_list[data_index])
                     client_code_file.write(";\n")

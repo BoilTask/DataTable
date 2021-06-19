@@ -1,7 +1,7 @@
 @echo off
 
-pip uninstall xlrd -y
+pip uninstall openpyxl -y
 
-pip install xlrd==1.2.0
+pip install openpyxl
 
 pause
