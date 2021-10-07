@@ -1,0 +1,34 @@
+100:
+    upper_case: ConfigDataTable
+    lower_case: config_data_table
+    enable_server_code: true
+    enable_client_code: true
+    sheet_list:
+        - sheet_name: Sheet1
+          data_id_row: 4
+          data_id_col: 3
+          export_type: Vertical
+101:
+    upper_case: StringDataTable
+    lower_case: string_data_table
+    enable_server_code: false
+    enable_client_code: true
+    sheet_list:
+        - sheet_name: Sheet1
+          data_id_row: 4
+          data_id_col: 2
+          export_type: Horizontal
+900:
+    upper_case: ExampleDataTable    # 大写表名
+    lower_case: example_data_table  # 小写表名
+    enable_server_code: true        # 是否生成服务器代码
+    enable_client_code: true        # 是否生成客户端代码
+    sheet_list:                     # 通过数组来配置读取哪些表名
+        - sheet_name: Sheet1        # 表名
+          data_id_row: 4            # 指定DataId字段所处行
+          data_id_col: 2            # 指定DataId字段所处列
+          export_type: Horizontal   # 指定表格排列方式[Horizontal横,Vertical纵]
+        - sheet_name: Sheet2
+          data_id_row: 5
+          data_id_col: 3
+          export_type: Vertical

@@ -1,0 +1,116 @@
+# 代码命名空间
+namespace: data
+# 输出导出路径
+export_path:
+    client_path: ..\Project\DataTableGame\Content\Data\Export\
+    server_cpp_path: ..\Build\csv\
+    server_go_path: ..\Project\DataTableService\
+
+# 数据类型存放文件
+type_def_file: type_def.hpp
+
+# 是否输出客户端代码
+enable_client_code: true
+client_code_path: ..\Project\DataTableGame\Source\DataTableGame\DataTable\DataTable\
+client_file_suffix: _C
+client_file_extension: .h
+
+# 是否输出服务器代码
+enable_server_code:
+    enable_server_cpp_code: true
+    enable_server_go_code: false
+
+# C++服务器相关配置
+cpp_server:
+    # 代码输出路径
+    server_code_path: ..\Project\DataTableServer\Source\DataTable\DataTable\
+    server_file_suffix: _s
+    server_file_extension: .h
+
+# go服务器相关配置
+go_server:
+    # 代码输出路径
+    server_code_path: ..\Project\DataTableService\
+    server_file_suffix: ""
+    server_file_extension: .go
+
+    # 注册文件地址
+    server_register_path: ..\Project\DataTableService\
+    server_register_file: datatable.go
+
+    # 索引数据配置表声明
+    server_declare_start: "\t//Don't edit the following content.SERVER_DATATABLE_DECLARE_START"
+    server_declare_end: "\t//Don't edit the above content.SERVER_DATATABLE_DECLARE_END"
+
+    # 索引数据表注册
+    server_register_start: "\t//Don't edit the following content.SERVER_DATATABLE_REGISTER_START"
+    server_register_end: "\t//Don't edit the above content.SERVER_DATATABLE_REGISTER_END"
+
+    # 索引数据表注册
+    server_get_start: "//Don't edit the following content.SERVER_DATATABLE_GET_START"
+    server_get_end: "//Don't edit the above content.SERVER_DATATABLE_GET_END"
+
+# 配置表类型枚举值存放文件
+type_register_path: ..\Project\DataTableGame\Source\DataTableGame\Public\\Def\
+type_register_file: data_table_register.hpp
+
+enum:
+    enum_config_path: ..\Config\Enum
+
+    # 枚举值数据存放客户端文件
+    enum_def_client_path: ..\Project\DataTableGame\Source\DataTableGame\Def\
+    enum_def_client_file: data_def_c.h
+
+    # 枚举值数据存放C++服务器文件
+    enum_def_server_cpp_path: ..\Project\DataTableServer\Source\Def\
+    enum_def_server_cpp_file: data_def_s.h
+
+    # 枚举值数据存放Go服务器文件
+    enum_def_server_go_path: ..\Project\YeloliService\src\lch\datatable\
+    enum_def_server_go_file: data_def.go
+
+# 客户端数据注册文件
+client_register:
+    # 文件地址
+    client_register_path: ..\Project\DataTableGame\Source\DataTableGame\DataTable\
+    client_register_h_file: DataTableManager.h
+    client_register_cpp_file: DataTableManager.cpp
+
+    # 索引数据表头文件
+    client_header_start: //Don't edit the following content.CLIENT_DATATABLE_HEADER_START
+    client_header_end: //Don't edit the above content.CLIENT_DATATABLE_HEADER_END
+
+    # 索引数据表注册
+    client_register_start: //Don't edit the following content.CLIENT_DATATABLE_REGISTER_START
+    client_register_end: //Don't edit the above content.CLIENT_DATATABLE_REGISTER_END
+
+# C++服务器数据注册文件
+server_cpp_register:
+    # 文件地址
+    server_register_path: ..\Project\DataTableServer\Source\DataTable\
+    server_register_h_file: data_table_manager.h
+    server_register_cpp_file: data_table_manager.cpp
+
+    # 索引数据表头文件
+    server_header_start: //Don't edit the following content.SERVER_DATATABLE_HEADER_START
+    server_header_end: //Don't edit the above content.SERVER_DATATABLE_HEADER_END
+
+    # 索引数据表声明
+    server_declare_start: //Don't edit the following content.SERVER_DATATABLE_DECLARE_START
+    server_declare_end: //Don't edit the above content.SERVER_DATATABLE_DECLARE_END
+
+    # 索引数据表注册
+    server_register_start: //Don't edit the following content.SERVER_DATATABLE_REGISTER_START
+    server_register_end: //Don't edit the above content.SERVER_DATATABLE_REGISTER_END
+
+# 数据表通用注册
+register:
+    # 索引数据表类型枚举值
+    type_start: //Don't edit the following content.CLIENT_DATATABLE_TYPE_START
+    type_end: //Don't edit the above content.CLIENT_DATATABLE_TYPE_END
+
+    # 是否生成数据表转义宏定义
+    enable_escape: true
+    # 索引数据表转义宏定义
+    escape_start: //Don't edit the following content.CLIENT_DATATABLE_ESCAPE_START
+    escape_end: //Don't edit the above content.CLIENT_DATATABLE_ESCAPE_END
