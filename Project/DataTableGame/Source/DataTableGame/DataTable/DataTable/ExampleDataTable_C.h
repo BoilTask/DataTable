@@ -1,6 +1,6 @@
 #pragma once
 
-//Exported by Excel, please don't edit this file directly.
+//Exported by Tool, please don't edit this file directly.
 
 #include "type_def.hpp"
 #include "data_def_c.h"
@@ -36,4 +36,12 @@ struct FExampleDataTable : public FTableRowBase
 		TArray<FString> VectorStringType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<TEnumAsByte<EEnumType2>> EnumTypeList;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		TArray<bool> VectorIndexBoolType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		TArray<FString> VectorIndexStringType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		int32 FillPlugin;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		float AddPlugin;
 };
