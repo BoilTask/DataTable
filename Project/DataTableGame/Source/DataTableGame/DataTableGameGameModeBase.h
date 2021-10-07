@@ -13,5 +13,8 @@ UCLASS()
 class DATATABLEGAME_API ADataTableGameGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	void InitGameState() override;
 	
 };

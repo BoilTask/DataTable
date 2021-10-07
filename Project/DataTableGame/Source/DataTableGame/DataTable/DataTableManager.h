@@ -42,6 +42,8 @@ public:
 
 public:
 	void Init();
+
+	void TestDataTable();
 	
 	UDataTable* GetDataTable(EDataTableType Type);
 
