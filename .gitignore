@@ -35,3 +35,4 @@
 *.vcxproj.user
 .vs
 Build
+/DataTable/Tool/datatable/__pycache__
