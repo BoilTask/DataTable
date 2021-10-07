@@ -62,7 +62,7 @@ void UDataTableManager::TestDataTable()
 		, DataTablePtr->FloatType
 		, *DataTablePtr->StringType
 		, DataTablePtr->BitType
-		, DataTablePtr->EnumType);
+		, static_cast<int32>(DataTablePtr->EnumType));
 
 	bool First;
 	FString Str;

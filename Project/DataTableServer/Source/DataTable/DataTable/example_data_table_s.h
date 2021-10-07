@@ -1,6 +1,6 @@
 #pragma once
 
-//Exported by Excel, please don't edit this file directly.
+//Exported by Tool, please don't edit this file directly.
 
 #include "type_def.hpp"
 #include "data_def_s.h"
@@ -27,6 +27,10 @@ namespace data
 			csv_parser.ParseVectorFloat(VectorFloatType);
 			csv_parser.ParseVectorString(VectorStringType);
 			csv_parser.ParseVectorEnum<EEnumType2>(EnumTypeList);
+			csv_parser.ParseVectorBool(VectorIndexBoolType);
+			csv_parser.ParseVectorString(VectorIndexStringType);
+			csv_parser.ParseInt(FillPlugin);
+			csv_parser.ParseFloat(AddPlugin);
 		};
 
 		int32 DataId;
@@ -41,5 +45,9 @@ namespace data
 		std::vector<float> VectorFloatType;
 		std::vector<std::string> VectorStringType;
 		std::vector<EEnumType2> EnumTypeList;
+		std::vector<bool> VectorIndexBoolType;
+		std::vector<std::string> VectorIndexStringType;
+		int32 FillPlugin;
+		float AddPlugin;
 	};
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-//Exported by Excel, please don't edit this file directly.
+//Exported by Tool, please don't edit this file directly.
 
 #include "type_def.hpp"
 #include "data_def_s.h"

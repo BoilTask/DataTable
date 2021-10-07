@@ -66,6 +66,10 @@ namespace data
 	void DataCsvParser::ParseVector(std::vector<T>& item_list)
 	{
 		const std::string str_line = GetStringItem();
+		if (str_line.empty())
+		{
+			return;
+		}
 		std::istringstream line_stream(str_line.substr(1, str_line.length() - 2));
 		std::string item_string;
 		while (getline(line_stream, item_string, ','))

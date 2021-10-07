@@ -7,7 +7,6 @@
 #include"data_table_template.hpp"
 //Don't edit the following content.SERVER_DATATABLE_HEADER_START
 #include "config_data_table_s.h"
-#include "string_data_table_s.h"
 #include "example_data_table_s.h"
 //Don't edit the above content.SERVER_DATATABLE_HEADER_END
 
@@ -20,7 +19,6 @@ namespace data
 		DataTableManager();
 //Don't edit the following content.SERVER_DATATABLE_DECLARE_START
 		DECLARE_DATATABLE_SERVER(ConfigDataTable)
-		DECLARE_DATATABLE_SERVER(StringDataTable)
 		DECLARE_DATATABLE_SERVER(ExampleDataTable)
 //Don't edit the above content.SERVER_DATATABLE_DECLARE_END
 		
