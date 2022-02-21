@@ -35,13 +35,15 @@ struct FExampleDataTable : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<FString> VectorStringType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
-		TArray<TEnumAsByte<EEnumType2>> EnumTypeList;
+		TArray<TEnumAsByte<EEnumType>> EnumTypeList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<bool> VectorIndexBoolType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		TArray<FString> VectorIndexStringType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
-		int32 FillPlugin;
+		int32 FillPluginInt;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
+		TArray<int32> FillPluginInt32;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FExampleDataTable)
 		float AddPlugin;
 };

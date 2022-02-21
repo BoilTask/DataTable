@@ -40,7 +40,6 @@ def get_cpp_server_data_type(data_type):
     data_type_list = data_type.split(":", 1)
     data_type = data_type_list[0]
 
-    enum_yaml_data = enum.get_enum_yaml_data()
     if data_type == "bool":
         return "bool"
     if data_type == "int32":
@@ -49,7 +48,7 @@ def get_cpp_server_data_type(data_type):
         return "float"
     if data_type == "string":
         return "std::string"
-    if data_type in enum_yaml_data:
+    if enum.is_valid_enum(data_type):
         return data_type
 
     index = data_type.find("[")
@@ -63,7 +62,6 @@ def get_client_data_type(data_type):
     data_type_list = data_type.split(":", 1)
     data_type = data_type_list[0]
 
-    enum_yaml_data = enum.get_enum_yaml_data()
     if data_type == "bool":
         return "bool"
     if data_type == "int32":
@@ -72,8 +70,11 @@ def get_client_data_type(data_type):
         return "float"
     if data_type == "string":
         return "FString"
-    if data_type in enum_yaml_data:
-        return "TEnumAsByte<" + data_type + ">"
+    if enum.is_valid_enum(data_type):
+        if enum.is_enum_enable_blueprint(data_type):
+            return "TEnumAsByte<" + data_type + ">"
+        else:
+            return "int32"
 
     index = data_type.find("[")
     if index >= 0:
@@ -86,7 +87,6 @@ def get_cpp_parse_function_name(data_type):
     data_type_list = data_type.split(":", 1)
     data_type = data_type_list[0]
 
-    enum_yaml_data = enum.get_enum_yaml_data()
     if data_type == "bool":
         return "ParseBool"
     if data_type == "int32":
@@ -104,11 +104,11 @@ def get_cpp_parse_function_name(data_type):
         return "ParseVectorFloat"
     if data_type == "string[]":
         return "ParseVectorString"
-    if data_type in enum_yaml_data:
+    if enum.is_valid_enum(data_type):
         return "ParseEnum<" + data_type + ">"
     else:
         data_type = data_type.rstrip("[]")
-        if data_type in enum_yaml_data:
+        if enum.is_valid_enum(data_type):
             return "ParseVectorEnum<" + data_type + ">"
 
     index_l = data_type.find("[")
@@ -120,33 +120,32 @@ def get_cpp_parse_function_name(data_type):
     return ''
 
 
-def get_go_parse_function_name(data_type, data_name):
+def get_go_parse_function_name(data_type, data_name, data_value):
     data_type_list = data_type.split(":", 1)
     data_type = data_type_list[0]
 
-    enum_yaml_data = enum.get_enum_yaml_data()
     if data_type == "bool":
-        return "ParseBool"
+        return "dataparse.ParseBool("+data_value+")"
     if data_type == "int32":
-        return "ParseInt32"
+        return "dataparse.ParseInt32("+data_value+")"
     if data_type == "float":
-        return "ParseFloat32"
+        return "dataparse.ParseFloat32("+data_value+")"
     if data_type == "string":
-        return "ParseString"
+        return "dataparse.ParseString("+data_value+")"
     if data_type == "bool[]":
-        return "ParseVectorBool"
+        return "dataparse.ParseVectorBool("+data_value+")"
     if data_type == "int32[]":
-        return "ParseVectorInt32"
+        return "dataparse.ParseVectorInt32("+data_value+")"
     if data_type == "float[]":
-        return "ParseVectorFloat32"
+        return "dataparse.ParseVectorFloat32("+data_value+")"
     if data_type == "string[]":
-        return "ParseVectorString"
-    if data_type in enum_yaml_data:
-        return "ParseEnum"
+        return "dataparse.ParseVectorString("+data_value+")"
+    if enum.is_valid_enum(data_type):
+        return "dataparse.ParseEnum"+data_type+"("+data_value+")"
     else:
         data_type = data_type.rstrip("[]")
-        if data_type in enum_yaml_data:
-            return "ParseVectorEnum"
+        if enum.is_valid_enum(data_type):
+            return "dataparse.ParseVectorEnum"+data_type+"("+data_value+")"
     return ''
 
 
@@ -154,7 +153,6 @@ def get_go_variable_definition(data_type, data_name):
     data_type_list = data_type.split(":", 1)
     data_type = data_type_list[0]
 
-    enum_yaml_data = enum.get_enum_yaml_data()
     if data_type == "bool":
         return data_name + " bool"
     if data_type == "int32":
@@ -171,17 +169,16 @@ def get_go_variable_definition(data_type, data_name):
         return data_name + " []float32"
     if data_type == "string[]":
         return data_name + " []string"
-    if data_type in enum_yaml_data:
-        return data_name + " int32"
+    if enum.is_valid_enum(data_type):
+        return data_name + " dataenum." + data_type
     else:
         data_type = data_type.rstrip("[]")
-        if data_type in enum_yaml_data:
-            return data_name + " []int32"
+        if enum.is_valid_enum(data_type):
+            return data_name + " []dataenum." + data_type
     return ''
 
 
 def parse_data(data_type_all, data):
-    enum_yaml_data = enum.get_enum_yaml_data()
 
     plugin_index = data_type_all.find(":")
 
@@ -207,137 +204,4 @@ def parse_data(data_type_all, data):
 
     data_type = data_type_all
 
-    if data_type == "bool":
-        return plugin.parse(data_type, data)
-
-    if data_type == "int32":
-        return plugin.parse(data_type, data)
-
-    if data_type == "float":
-        return plugin.parse(data_type, data)
-
-    if data_type == "string":
-        return plugin.parse(data_type, data)
-
-    if data_type in enum_yaml_data:
-        return plugin.parse(data_type, data)
-
-    if data_type == "bool[]":
-        if common.is_data_empty(data):
-            return ""
-        data = str(data)
-        word_list = data.split(",")
-        data = "("
-        is_first = True
-        for word in word_list:
-            if is_first:
-                is_first = False
-            else:
-                data = data + ","
-            data = data + plugin.parse("bool", word)
-        data = data + ")"
-        return data
-
-    if data_type == "int32[]":
-        if common.is_data_empty(data):
-            return ""
-        data = str(data)
-        word_list = data.split(",")
-        data = "("
-        is_first = True
-        for word in word_list:
-            if is_first:
-                is_first = False
-            else:
-                data = data + ","
-            if word == "":
-                data = data + "0"
-            else:
-                data = data + plugin.parse("int32", word)
-        data = data + ")"
-        return data
-
-    if data_type == "float[]":
-        if common.is_data_empty(data):
-            return ""
-        data = str(data)
-        word_list = data.split(",")
-        data = "("
-        is_first = True
-        for word in word_list:
-            if is_first:
-                is_first = False
-            else:
-                data = data + ","
-            data = data + plugin.parse("float", word)
-        data = data + ")"
-        return data
-
-    if data_type == "string[]":
-        if common.is_data_empty(data):
-            return ""
-        data = str(data)
-        word_list = data.split(",")
-
-        real_word_list = []
-        i = 0
-        while i < len(word_list):
-            word = word_list[i]
-            real_word = ""
-            j = 0
-            while j < len(word):
-                c = word[j]
-                if c == '\\':
-                    if j + 1 < len(word):
-                        real_word += word[j + 1]
-                        j += 1
-                    else:
-                        real_word += ","
-                        if i + 1 < len(word_list):
-                            word += word_list[i + 1]
-                        i += 1
-                else:
-                    real_word += c
-
-                j += 1
-
-            real_word_list.append(real_word)
-
-            i += 1
-
-        data = "("
-        is_first = True
-        for word in real_word_list:
-            if is_first:
-                is_first = False
-            else:
-                data = data + ","
-
-            word = word.replace("\\", "\\\\")
-            word = word.replace("\"", "\\\"\"")
-
-            data = data + "\"\"" + word + "\"\""
-
-        data = data + ")"
-        return data
-
-    else:
-
-        if common.is_data_empty(data):
-            return ""
-        data = str(data)
-        data_type = data_type.rstrip("[]")
-        if data_type in enum_yaml_data:
-            word_list = data.split(",")
-            data = "("
-            is_first = True
-            for word in word_list:
-                if is_first:
-                    is_first = False
-                else:
-                    data = data + ","
-                data = data + plugin.parse(data_type, word)
-            data = data + ")"
-            return data
-
-    return ""
+    return plugin.parse(data_type, data)

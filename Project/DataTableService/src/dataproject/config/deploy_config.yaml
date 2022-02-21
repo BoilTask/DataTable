@@ -1,0 +1,3 @@
+LinuxLogPath: ./log/
+WindowsLogPath: ./log/ # 日志文件:
+DataTablePath: ./datatable/csv

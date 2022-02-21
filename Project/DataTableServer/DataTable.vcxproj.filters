@@ -65,14 +65,13 @@
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Common\singleton.hpp">
       <Filter>Source\Public\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DataTable\DataTable\config_data_table_s.h">
-      <Filter>Source\DataTable\DataTable</Filter>
-    </ClInclude>
+<!-- Don't edit the following content.SERVER_DATATABLE_FILTER_START -->
     <ClInclude Include="Source\DataTable\DataTable\example_data_table_s.h">
       <Filter>Source\DataTable\DataTable</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DataTable\DataTable\string_data_table_s.h">
+    <ClInclude Include="Source\DataTable\DataTable\config_data_table_s.h">
       <Filter>Source\DataTable\DataTable</Filter>
     </ClInclude>
+<!-- Don't edit the above content.SERVER_DATATABLE_FILTER_END -->
   </ItemGroup>
 </Project>

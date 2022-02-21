@@ -2,7 +2,6 @@
 import os
 import sys
 import yaml
-import yaml
 
 from datatable import common
 
@@ -290,6 +289,10 @@ def get_server_go_enum_file_path():
     return get_tool_file_path() + config_yaml_data['enum']['enum_def_server_go_path'] + config_yaml_data['enum']['enum_def_server_go_file']
 
 
+def get_server_go_enum_parse_file_path():
+    return get_tool_file_path() + config_yaml_data['enum']['enum_parse_server_go_path'] + config_yaml_data['enum']['enum_parse_server_go_file']
+
+
 def get_client_register_h_path():
     return get_tool_file_path() + config_yaml_data['client_register']['client_register_path'] + config_yaml_data['client_register']['client_register_h_file']
 
@@ -312,3 +315,7 @@ def get_serverv_cpp_register_cpp_path():
 
 def get_serverv_go_register_path():
     return get_tool_file_path() + config_yaml_data['go_server']['server_register_path'] + config_yaml_data['go_server']['server_register_file']
+
+
+def get_serverv_go_project_name():
+    return config_yaml_data['go_server']['server_project_name']

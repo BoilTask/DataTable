@@ -4,7 +4,7 @@ namespace: data
 export_path:
     client_path: ..\Project\DataTableGame\Content\Data\Export\
     server_cpp_path: ..\Build\csv\
-    server_go_path: ..\Project\DataTableService\
+    server_go_path: ..\Project\DataTableService\src\dataproject\datatable\csv\
 
 # 数据类型存放文件
 type_def_file: type_def.hpp
@@ -18,7 +18,7 @@ client_file_extension: .h
 # 是否输出服务器代码
 enable_server_code:
     enable_server_cpp_code: true
-    enable_server_go_code: false
+    enable_server_go_code: true
 
 # C++服务器相关配置
 cpp_server:
@@ -30,12 +30,14 @@ cpp_server:
 # go服务器相关配置
 go_server:
     # 代码输出路径
-    server_code_path: ..\Project\DataTableService\
+    server_code_path: ..\Project\DataTableService\src\dataproject\datatable\datapacket\
     server_file_suffix: ""
     server_file_extension: .go
 
+    server_project_name: dataproject
+
     # 注册文件地址
-    server_register_path: ..\Project\DataTableService\
+    server_register_path: ..\Project\DataTableService\src\dataproject\datatable\
     server_register_file: datatable.go
 
     # 索引数据配置表声明
@@ -66,8 +68,12 @@ enum:
     enum_def_server_cpp_file: data_def_s.h
 
     # 枚举值数据存放Go服务器文件
-    enum_def_server_go_path: ..\Project\YeloliService\src\lch\datatable\
+    enum_def_server_go_path: ..\Project\DataTableService\src\dataproject\datatable\dataenum\
     enum_def_server_go_file: data_def.go
+
+    # 枚举值数据解析Go服务器文件
+    enum_parse_server_go_path: ..\Project\DataTableService\src\dataproject\datatable\dataparse\
+    enum_parse_server_go_file: parse_enum.go
 
 # 客户端数据注册文件
 client_register:
@@ -103,6 +109,19 @@ server_cpp_register:
     server_register_start: //Don't edit the following content.SERVER_DATATABLE_REGISTER_START
     server_register_end: //Don't edit the above content.SERVER_DATATABLE_REGISTER_END
 
+    server_project_path: ..\Project\DataTableServer\
+    server_project_datatable_path: Source\DataTable\DataTable
+
+    # 工程数据表注册
+    server_project_file: DataTable.vcxproj
+    server_project_start: <!-- Don't edit the following content.SERVER_DATATABLE_PROJECT_START -->
+    server_project_end: <!-- Don't edit the above content.SERVER_DATATABLE_PROJECT_END -->
+
+    # 目录数据表注册
+    server_filter_file: DataTable.vcxproj.filters
+    server_filter_start: <!-- Don't edit the following content.SERVER_DATATABLE_FILTER_START -->
+    server_filter_end: <!-- Don't edit the above content.SERVER_DATATABLE_FILTER_END -->
+
 # 数据表通用注册
 register:
     # 索引数据表类型枚举值
@@ -110,7 +129,7 @@ register:
     type_end: //Don't edit the above content.CLIENT_DATATABLE_TYPE_END
 
     # 是否生成数据表转义宏定义
-    enable_escape: true
+    enable_escape: false
     # 索引数据表转义宏定义
     escape_start: //Don't edit the following content.CLIENT_DATATABLE_ESCAPE_START
     escape_end: //Don't edit the above content.CLIENT_DATATABLE_ESCAPE_END

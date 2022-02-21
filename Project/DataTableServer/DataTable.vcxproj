@@ -28,9 +28,10 @@
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\data_table_def.hpp" />
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\data_table_register.hpp" />
     <ClInclude Include="..\DataTableGame\Source\DataTableGame\Public\Def\type_def.hpp" />
+<!-- Don't edit the following content.SERVER_DATATABLE_PROJECT_START -->
     <ClInclude Include="Source\DataTable\DataTable\config_data_table_s.h" />
     <ClInclude Include="Source\DataTable\DataTable\example_data_table_s.h" />
-    <ClInclude Include="Source\DataTable\DataTable\string_data_table_s.h" />
+<!-- Don't edit the above content.SERVER_DATATABLE_PROJECT_END -->
     <ClInclude Include="Source\DataTable\data_csv_parser.h" />
     <ClInclude Include="Source\DataTable\data_table_base.h" />
     <ClInclude Include="Source\DataTable\data_table_manager.h" />

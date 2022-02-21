@@ -4,6 +4,7 @@ import openpyxl
 from datatable import common
 from datatable import config
 from datatable import excel
+from datatable import color
 
 
 def process_data(file_id):
@@ -18,7 +19,7 @@ def process_data(file_id):
         return
 
     if not excel.init(file_id):
-        print(str(file_id) + " Process Data Fail!")
+        color.print_red_text(str(file_id) + " Process Data Fail!")
         return
 
     process_csv_data()

@@ -26,10 +26,11 @@ namespace data
 			csv_parser.ParseVectorInt(VectorInt32Type);
 			csv_parser.ParseVectorFloat(VectorFloatType);
 			csv_parser.ParseVectorString(VectorStringType);
-			csv_parser.ParseVectorEnum<EEnumType2>(EnumTypeList);
+			csv_parser.ParseVectorEnum<EEnumType>(EnumTypeList);
 			csv_parser.ParseVectorBool(VectorIndexBoolType);
 			csv_parser.ParseVectorString(VectorIndexStringType);
-			csv_parser.ParseInt(FillPlugin);
+			csv_parser.ParseInt(FillPluginInt);
+			csv_parser.ParseVectorInt(FillPluginInt32);
 			csv_parser.ParseFloat(AddPlugin);
 		};
 
@@ -44,10 +45,11 @@ namespace data
 		std::vector<int32> VectorInt32Type;
 		std::vector<float> VectorFloatType;
 		std::vector<std::string> VectorStringType;
-		std::vector<EEnumType2> EnumTypeList;
+		std::vector<EEnumType> EnumTypeList;
 		std::vector<bool> VectorIndexBoolType;
 		std::vector<std::string> VectorIndexStringType;
-		int32 FillPlugin;
+		int32 FillPluginInt;
+		std::vector<int32> FillPluginInt32;
 		float AddPlugin;
 	};
 }

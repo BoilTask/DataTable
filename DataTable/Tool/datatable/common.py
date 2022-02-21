@@ -1,5 +1,6 @@
 
 import os
+import re
 
 
 def get_int_from_string(data):
@@ -56,9 +57,9 @@ def overwrite_file_content(write_file_path, content, code="gbk"):
         target_file.close()
 
 
-def write_file_content(write_file_path, start_key, end_key, content):
+def write_file_content(write_file_path, start_key, end_key, content, code="gbk"):
     file_content = ""
-    with open(write_file_path, 'r', encoding='utf-8') as target_file:
+    with open(write_file_path, 'r', encoding=code) as target_file:
         file_content = target_file.read()
         start_index = file_content.find(start_key)
         if start_index == -1:
@@ -72,5 +73,15 @@ def write_file_content(write_file_path, start_key, end_key, content):
         end_content = file_content[head_end_index:]
         file_content = start_content + content + end_content
 
-    with open(write_file_path, 'w', encoding='gbk') as target_file:
+    with open(write_file_path, 'w', encoding=code) as target_file:
         target_file.write(file_content)
+
+
+def split_str_list(str):
+    # res_list = []
+    # data_str_list = str.split(",")
+    # for data_str in data_str_list:
+    #     str_list2 = data_str.split(",")
+    #     res_list.append(str_list2)
+    # return res_list
+    return re.split(r'[,~!@#$%^&\*=+?:\\/|;]', str)

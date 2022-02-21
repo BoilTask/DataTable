@@ -5,6 +5,7 @@ from datatable import common
 from datatable import clean
 from datatable import data
 from datatable import code
+from datatable import unreal
 
 
 def get_file_dict():
@@ -73,3 +74,7 @@ def generate_enum():
 
 def register_datatable():
     code.register_datatable()
+
+
+def game_import(compile=False, force=False):
+    return unreal.game_import(compile, force)

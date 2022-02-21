@@ -4,6 +4,7 @@ import openpyxl
 
 from datatable import parse
 from datatable import config
+from datatable import color
 
 
 class MergeData:
@@ -26,7 +27,8 @@ def init(file_id):
 
     file_name = config.get_file_name(file_id)
     tool_file_path = config.get_tool_file_path()
-    excel_file = openpyxl.load_workbook(tool_file_path + file_name)
+    excel_file = openpyxl.load_workbook(
+        tool_file_path + file_name, data_only=True)
 
     if not process(file_id):
         return False
@@ -53,13 +55,13 @@ def process(file_id):
     excel_data_table = []
     for sheet_info in sheet_list:
         if not process_data(sheet_info):
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " DataId row or col not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " DataId row or col not valid!")
             continue
 
         if len(sheet_data_table) < 1:
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " Sheet not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " Sheet not valid!")
             continue
         excel_data_table += sheet_data_table
 
@@ -72,29 +74,29 @@ def check_head(file_id, sheet_list):
     last_head_name_list = []
     for sheet_info in sheet_list:
         if not process_head(sheet_info):
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " Head not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " Head not valid!")
             return False
 
         data_type_list = get_data_type_list()
         if len(data_type_list) < 1:
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " Head not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " Head not valid!")
             return False
 
         head_name_list = get_head_name_list()
         if len(head_name_list) < 1:
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " Head not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " Head not valid!")
             return False
 
         if len(last_data_type_list) > 0 and last_data_type_list != data_type_list:
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " Head not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " Head not valid!")
             return False
         if len(last_head_name_list) > 0 and last_head_name_list != head_name_list:
-            print(str(file_id) + " " + sheet_info["sheet_name"]
-                  + " Head not valid!")
+            color.print_red_text(str(file_id) + " " + sheet_info["sheet_name"]
+                                 + " Head not valid!")
             return False
 
         last_data_type_list = data_type_list
@@ -263,7 +265,7 @@ def process_data(sheet_info):
                         if(merge_array_i > 0):
                             value += ","
                         if data.value:
-                            value += data.value
+                            value += str(data.value)
                         else:
                             value += ""
 

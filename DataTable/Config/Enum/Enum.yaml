@@ -1,3 +1,9 @@
+_:
+    EnableClient: True
+    EnableServerCpp: True
+    EnableServerGo: True
+    EnableBlueprint: True
+
 EEnumType:
     _: "Test Enum" #此为导出时枚举值的注释
     EEnumType_Type_0:
